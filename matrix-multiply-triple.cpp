@@ -6,7 +6,7 @@ Matrix Multiply, Triply Nested
 #include <iostream>
 
 // Define function to print a matrix (2-D array)
-void printarray(int array[][column_count], int row_count, int column_count) {
+void printarray(int array[][4], int row_count, int column_count) {
   using std::cout;
   using std::endl;
   for (int i = 0; i < row_count; i++) {
@@ -48,10 +48,6 @@ int main() {
 
   // Create blank matrix C as the resulting matrix C = A*B
   //int C[4][4];
-  
-  // Find length of matrix
-  int len = *(&A + 1) - A;
-  cout << "1-D length of matrix: " << len << endl;
   
   // Print matrix A
   cout << "Matrix A:" << endl;
