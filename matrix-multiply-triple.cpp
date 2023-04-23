@@ -45,6 +45,9 @@ int main() {
     {-39, 99, 0, 63}
     }
   */
+
+  // Create blank matrix C as the resulting matrix C = A*B
+  //int C[4][4];
   
   // Find length of matrix
   int len = *(&A + 1) - A;
@@ -53,13 +56,13 @@ int main() {
   // Print matrix A
   cout << "Matrix A:" << endl;
   printarray(A, len, len);
+  // Print matrix B
+  cout << "Matrix B:" << endl;
+  printarray(B, len, len);
 
-  // Perform merge sort
-  merge_sort(A, 0, len-1);
+  // Perform 
 
-  // Print sorted array
-  cout << "Sorted array A:" << endl;
-  printarray(A, len);
+  // Print resulting matrix C
   
   return 0;
 }
