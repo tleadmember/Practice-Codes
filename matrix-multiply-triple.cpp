@@ -6,92 +6,53 @@ Matrix Multiply, Triply Nested
 #include <iostream>
 
 // Define function to print a matrix (2-D array)
-void printarray(int array[], int length) {
+void printarray(int array[][column_count], int row_count, int column_count) {
   using std::cout;
   using std::endl;
-  for (int index = 0; index < length; index++) {
-    cout << array[index] << " ";
+  for (int i = 0; i < row_count; i++) {
+    for (int j = 0; j < column_count; j++) {
+      cout << array[i][j] << "\t";
+    }
+    count << endl;
   }
   cout << endl;
 }
 
-// Define merge() auxiliary function
-void merge(int array[], int start, int mid, int end) {
-  using std::cout;
-  using std::endl;
-  // Lengths of arrays L and R
-  int nL = mid - start + 1;
-  int nR = end - (mid + 1) + 1;
-  // Define blank  arrays L and R
-  int L[nL] = {};
-  int R[nR] = {};
-  // Copy into arrays L and R
-  for (int i = 0; i < nL; i++) {
-    L[i] = array[start+i];
-  }
-  for (int j = 0; j < nR; j++) {
-    R[j] = array[mid+1+j];
-  }
-  // Compare merge
-  int i = 0;
-  int j = 0;
-  int k = start;
-  while (i < nL && j < nR) {
-    if (L[i] < R[j]) {
-      array[k] = L[i];
-      i = i + 1;
-    }
-    else {
-      array[k] = R[j];
-      j = j + 1;
-    }
-    k = k + 1;
-  }
-  // Copy the rest of either L or R into A
-  while (i < nL) {
-    array[k] = L[i];
-    i = i + 1;
-    k = k + 1;
-  }
-  while (j < nR) {
-    array[k] = R[j];
-    j = j + 1;
-    k = k + 1;
-  }
-}
-
-// Define merge-sort() function
-void merge_sort(int array[], int start, int end) {
-  using std::cout;
-  using std::endl;
-  // Check if single or zero element, then return immediately
-  if (start >= end) {
-    return;
-  }
-  // Define mid index
-  int mid = (start + end) / 2 ;
-  // Recursive merge sort, first half
-  merge_sort(array, start, mid);
-  // Recursive merge sort, second half
-  merge_sort(array, mid+1, end);
-  // Merge
-  merge(array, start, mid, end);
-}
 
 // Main function
 int main() {
   using std::cout;
   using std::endl;
-  // Suppose we are given an unsorted array
-  int A[] = { 7, 2, 4, 5, 3, 1, 9, 8, 6 };
+  // Suppose we are given 2 SQUARE matrices to multiply
+  int A[4][4] = {
+    {5, -2, 4, 1}
+    {7, 6, -5, 0}
+    {2, -3, -9, 8}
+    {2, 7, 2, 9}
+    };
+  int B[4][4] = {
+    {-6, 3, 7, 3}
+    {2, 6, -3, 7}
+    {2, -6, 8, 4}
+    {-5, 7, -1, 0}
+    };
 
-  // Find length of array
-  int len = *(&A + 1) - A;
-  cout << "Length of array: " << len << endl;
+  /* Result of A*B should be
+    {
+    {-31, -14, 72, 17}
+    {-40, 87, -9, 43}
+    {-76, 98, -57, -51}
+    {-39, 99, 0, 63}
+    }
+  */
   
-  // Print unsorted array
-  cout << "Unsorted array A:" << endl;
-  printarray(A, len);
+  // Find length of matrix
+  int len = *(&A + 1) - A;
+  cout << "1-D length of matrix: " << len << endl;
+  
+  // Print matrix A
+  cout << "Matrix A:" << endl;
+  printarray(A, len, len);
 
   // Perform merge sort
   merge_sort(A, 0, len-1);
