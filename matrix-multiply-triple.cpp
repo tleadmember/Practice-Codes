@@ -8,6 +8,7 @@ Matrix Multiply, Triply Nested
 //int ROWS = 4;
 //int COLS = 4;
 
+// Sample change to see in Magit
 
 // Define function to print a matrix (2-D array)
 void printarray(int array[][4], int row_count, int column_count) {
