@@ -3,7 +3,11 @@ TQBH - 2023-04-23
 Matrix Multiply, Triply Nested
 */
 
+
 #include <iostream>
+//int ROWS = 4;
+//int COLS = 4;
+
 
 // Define function to print a matrix (2-D array)
 void printarray(int array[][4], int row_count, int column_count) {
@@ -23,7 +27,7 @@ void printarray(int array[][4], int row_count, int column_count) {
 int main() {
   using std::cout;
   using std::endl;
-  // Suppose we are given 2 SQUARE matrices to multiply
+  // Suppose we are given two 4x4 matrices to multiply
   int A[4][4] = {
     {5, -2, 4, 1},
     {7, 6, -5, 0},
@@ -47,18 +51,28 @@ int main() {
   */
 
   // Create blank matrix C as the resulting matrix C = A*B
-  //int C[4][4];
+  // and assign zero values
+  int C[4][4] = {0};
   
   // Print matrix A
-  cout << "Matrix A:" << endl;
-  printarray(A, len, len);
+  cout << "Matrix A=" << endl;
+  printarray(A, 4, 4);
   // Print matrix B
-  cout << "Matrix B:" << endl;
-  printarray(B, len, len);
+  cout << "Matrix B=" << endl;
+  printarray(B, 4, 4);
 
-  // Perform 
-
+  // Perform matrix multiplication
+  for (int i = 0; i < 4; i++) {
+    for (int j = 0; j < 4; j++) {
+      for (int k = 0; k < 4; k++) {
+        C[i][j] += A[i][k] * B[k][j];
+      }
+    }
+  }
+  
   // Print resulting matrix C
+  cout << "Resulting matrix C = A*B =" << endl;
+  printarray(C, 4, 4);
   
   return 0;
 }
