@@ -4,7 +4,6 @@ Merge Sort Algorithm
 */
 
 #include <iostream>
-#include <cmath>
 
 // Define function to print an array
 void printarray(int array[], int length) {
@@ -70,7 +69,7 @@ void merge_sort(int array[], int start, int end) {
     return;
   }
   // Define mid index
-  int mid = floor( (start + end) / 2 );
+  int mid = (start + end) / 2 ;
   // Recursive merge sort, first half
   merge_sort(array, start, mid);
   // Recursive merge sort, second half
