@@ -1,11 +1,11 @@
 /*
-TQBH - 2023-04-17
-Merge Sort Algorithm
+TQBH - 2023-04-23
+Matrix Multiply, Triply Nested
 */
 
 #include <iostream>
 
-// Define function to print an array
+// Define function to print a matrix (2-D array)
 void printarray(int array[], int length) {
   using std::cout;
   using std::endl;
