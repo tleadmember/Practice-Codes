@@ -13,7 +13,7 @@ void printarray(int array[][4], int row_count, int column_count) {
     for (int j = 0; j < column_count; j++) {
       cout << array[i][j] << "\t";
     }
-    count << endl;
+    cout << endl;
   }
   cout << endl;
 }
@@ -25,15 +25,15 @@ int main() {
   using std::endl;
   // Suppose we are given 2 SQUARE matrices to multiply
   int A[4][4] = {
-    {5, -2, 4, 1}
-    {7, 6, -5, 0}
-    {2, -3, -9, 8}
+    {5, -2, 4, 1},
+    {7, 6, -5, 0},
+    {2, -3, -9, 8},
     {2, 7, 2, 9}
     };
   int B[4][4] = {
-    {-6, 3, 7, 3}
-    {2, 6, -3, 7}
-    {2, -6, 8, 4}
+    {-6, 3, 7, 3},
+    {2, 6, -3, 7},
+    {2, -6, 8, 4},
     {-5, 7, -1, 0}
     };
 
