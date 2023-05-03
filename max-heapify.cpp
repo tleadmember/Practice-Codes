@@ -1,6 +1,6 @@
 /*
-TQBH - 2023-04-17
-Merge Sort Algorithm
+TQBH - 2023-05-03
+Max Heapify
 */
 
 #include <iostream>
@@ -15,68 +15,42 @@ void printarray(int array[], int length) {
   cout << endl;
 }
 
-// Define merge() auxiliary function
-void merge(int array[], int start, int mid, int end) {
-  using std::cout;
-  using std::endl;
-  // Lengths of arrays L and R
-  int nL = mid - start + 1;
-  int nR = end - (mid + 1) + 1;
-  // Define blank  arrays L and R
-  int L[nL] = {};
-  int R[nR] = {};
-  // Copy into arrays L and R
-  for (int i = 0; i < nL; i++) {
-    L[i] = array[start+i];
+// Define left() function to return index of left child of a node
+int left(i) {
+  return 2*i;
+}
+
+// Define right() function to return index of right child of a node
+int right(i) {
+  return 2*i + 1;
+}
+
+// Define max_heapify() function
+void max_heapify(int array[], int i) {
+  l = left(i);
+  r = right(i);
+  int len = *(&A + 1) - A;
+
+  if ((l < len) && (A[l] > A[i])) {
+    largest = l;
+  } else {
+    largest = i;
   }
-  for (int j = 0; j < nR; j++) {
-    R[j] = array[mid+1+j];
+
+  if ((r < len) && (A[r] > A[largest])) {
+    largest = r;
   }
-  // Compare merge
-  int i = 0;
-  int j = 0;
-  int k = start;
-  while (i < nL && j < nR) {
-    if (L[i] < R[j]) {
-      array[k] = L[i];
-      i = i + 1;
-    }
-    else {
-      array[k] = R[j];
-      j = j + 1;
-    }
-    k = k + 1;
-  }
-  // Copy the rest of either L or R into A
-  while (i < nL) {
-    array[k] = L[i];
-    i = i + 1;
-    k = k + 1;
-  }
-  while (j < nR) {
-    array[k] = R[j];
-    j = j + 1;
-    k = k + 1;
+
+  if (largest <> i) {
+    // If A[i] is not the largest, exchange A[i] with A[largest]
+    temp = A[i];
+    A[i] = A[largest];
+    A[largest] = temp;
+    // Recursively run max_heapify()
+    max_heapify(A, largest);
   }
 }
 
-// Define merge-sort() function
-void merge_sort(int array[], int start, int end) {
-  using std::cout;
-  using std::endl;
-  // Check if single or zero element, then return immediately
-  if (start >= end) {
-    return;
-  }
-  // Define mid index
-  int mid = (start + end) / 2 ;
-  // Recursive merge sort, first half
-  merge_sort(array, start, mid);
-  // Recursive merge sort, second half
-  merge_sort(array, mid+1, end);
-  // Merge
-  merge(array, start, mid, end);
-}
 
 // Main function
 int main() {
@@ -93,8 +67,8 @@ int main() {
   cout << "Unsorted array A:" << endl;
   printarray(A, len);
 
-  // Perform merge sort
-  merge_sort(A, 0, len-1);
+  // Perform max_heapify()
+  max_heapify(A, 0);
 
   // Print sorted array
   cout << "Sorted array A:" << endl;
