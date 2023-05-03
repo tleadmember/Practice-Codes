@@ -17,19 +17,18 @@ void printarray(int array[], int length) {
 
 // Define left() function to return index of left child of a node
 int left(int i) {
-  return 2*i;
+  return 2*i + 1;
 }
 
 // Define right() function to return index of right child of a node
 int right(int i) {
-  return 2*i + 1;
+  return 2*i + 2;
 }
 
 // Define max_heapify() function
-void max_heapify(int array[], int i) {
+void max_heapify(int array[], int i, int len) {
   int l = left(i);
   int r = right(i);
-  int len = *(&array + 1) - array;
   int largest = 0;
 
   if ((l < len) && (array[l] > array[i])) {
@@ -48,7 +47,7 @@ void max_heapify(int array[], int i) {
     array[i] = array[largest];
     array[largest] = temp;
     // Recursively run max_heapify()
-    max_heapify(array, largest);
+    max_heapify(array, largest, len);
   }
 }
 
@@ -58,7 +57,7 @@ int main() {
   using std::cout;
   using std::endl;
   // Suppose we are given an unsorted array
-  int A[] = { 7, 2, 4, 5, 3, 1, 9, 8, 6 };
+  int A[] = { 2, 7, 4, 5, 3, 1, 9, 8, 6 };
 
   // Find length of array
   int len = *(&A + 1) - A;
@@ -69,7 +68,7 @@ int main() {
   printarray(A, len);
 
   // Perform max_heapify()
-  max_heapify(A, 0);
+  max_heapify(A, 0, len);
 
   // Print sorted array
   cout << "Sorted array A:" << endl;
