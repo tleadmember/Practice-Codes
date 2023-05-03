@@ -16,38 +16,39 @@ void printarray(int array[], int length) {
 }
 
 // Define left() function to return index of left child of a node
-int left(i) {
+int left(int i) {
   return 2*i;
 }
 
 // Define right() function to return index of right child of a node
-int right(i) {
+int right(int i) {
   return 2*i + 1;
 }
 
 // Define max_heapify() function
 void max_heapify(int array[], int i) {
-  l = left(i);
-  r = right(i);
-  int len = *(&A + 1) - A;
+  int l = left(i);
+  int r = right(i);
+  int len = *(&array + 1) - array;
+  int largest = 0;
 
-  if ((l < len) && (A[l] > A[i])) {
+  if ((l < len) && (array[l] > array[i])) {
     largest = l;
   } else {
     largest = i;
   }
 
-  if ((r < len) && (A[r] > A[largest])) {
+  if ((r < len) && (array[r] > array[largest])) {
     largest = r;
   }
 
-  if (largest <> i) {
+  if (largest != i) {
     // If A[i] is not the largest, exchange A[i] with A[largest]
-    temp = A[i];
-    A[i] = A[largest];
-    A[largest] = temp;
+    int temp = array[i];
+    array[i] = array[largest];
+    array[largest] = temp;
     // Recursively run max_heapify()
-    max_heapify(A, largest);
+    max_heapify(array, largest);
   }
 }
 
