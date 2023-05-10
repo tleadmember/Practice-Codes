@@ -4,6 +4,8 @@ Heap Sort
 */
 
 #include <iostream>
+#include <cstdlib>
+#include <ctime>
 
 
 // Define function to print an array
@@ -96,22 +98,32 @@ int main() {
   using std::cout;
   using std::endl;
   // Suppose we are given an unsorted array
-  int A[] = { 2, 7, 4, 5, 3, 1, 9, 8, 6 };
+  //int A[] = { 2, 7, 4, 5, 3, 1, 9, 8, 6 };
+  std::srand(std::time(nullptr));
+  for (int i = 0; i < 10000; i++) {
+    // Declare the array
+    int A[20];
+    // Find length of array
+    int len = *(&A + 1) - A;
+      //cout << "Length of array: " << len << endl;
+    for (int i = 0; i < len; i++) {
+      A[i] = std::rand() % 101; // number between 0 and 100
+    }
+      //cout << "Unsorted array A:" << endl;
+      //printarray(A, len);
+    // Sort the array by heap_sort()
+    heap_sort(A, len);
+    // Check that it is sorted
+      //cout << "Sorted array A:" << endl;
+      //printarray(A, len);
+    for (int i = 0; i < len-1; i++) {
+      if (A[i+1] < A[i]) {
+	return -1;
+      }
+    }
+  }
 
-  // Find length of array
-  int len = *(&A + 1) - A;
-  cout << "Length of array: " << len << endl;
-  
-  // Print unsorted array
-  cout << "Unsorted array A:" << endl;
-  printarray(A, len);
+  cout << "No error." << endl;
 
-  // Perform heap_sort()
-  heap_sort(A, len);
-  
-  // Print sorted array
-  cout << "Sorted array A:" << endl;
-  printarray(A, len);
-  
   return 0;
 }
