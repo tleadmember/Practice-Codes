@@ -92,7 +92,7 @@ int main() {
     // Check that it is sorted
     for (int i = 0; i < len-1; i++) {
       if (A[i+1] < A[i]) {
-	return -1; // return error code -1 if not sorted correctly
+	return -1; // return error code -1 if not sorted correct
       }
     }
   }
