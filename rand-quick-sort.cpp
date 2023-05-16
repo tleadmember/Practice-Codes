@@ -49,7 +49,6 @@ int partition(int array[], int start, int end) {
 int rand_partition(int array[], int start, int end) {
   // Exchange a random element with the ending element (where pivot
   // will be)
-  std::srand(std::time(nullptr));  // seed the rand() function
   int i = start + std::rand() % (end-start+1); // random index
   int temp = array[i];
   array[i] = array[end];
