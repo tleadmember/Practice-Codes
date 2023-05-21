@@ -5,7 +5,6 @@ Stack Implementation Using C++ Class
 
 #include <iostream>
 #include <cstdlib>
-#include <ctime>
 
 
 // Define function to print an array
@@ -37,10 +36,10 @@ public:
   // Define common methods for a stack
   int size();
   void push(int);
-  //int pop();
-  //int peek();
+  int pop();
+  int peek();
   bool isFull();
-  //bool isEmpty();
+  bool isEmpty();
 };
 
 
@@ -70,16 +69,43 @@ void Stack::push(int x) {
   if (isFull()) {
     std::cout << "Stack overflows. Program terminated." << std::endl;
     exit(EXIT_FAILURE);
-  }
+  } else {
   // Push
   std::cout << "Pushing " << x << std::endl;
   arr[++top] = x;
+  }
+}
+
+
+// Define pop() method
+int Stack::pop() {
+  // Check if stack underflows
+  if (isEmpty()) {
+    std::cout << "Stack underflows. Program terminated." << std::endl;
+    exit(EXIT_FAILURE);
+  } else {
+  // Pop
+  std::cout << "Popping " << arr[top] << std::endl;
+  return arr[top--];
+  }
 }
 
 
 // Define isFull() method
 bool Stack::isFull() {
-  return (top >= (capacity-1));
+  return (top == (capacity-1));
+}
+
+
+// Define isEmpty() method
+bool Stack::isEmpty() {
+  return (top == -1);
+}
+
+
+// Define peek() method
+int Stack::peek() {
+  return (arr[top]);
 }
 
 
@@ -89,12 +115,26 @@ int main() {
   using std::cout;
   using std::endl;
 
-  int chosen_size = 6;
+  int chosen_size = 4;
   Stack myStack(chosen_size); // if size not specified, Stack
 			      // constructor will use DEFAULT_SIZE???
 
   cout << "Stack size is " << myStack.size() << endl;
 
+  myStack.push(20);
+  myStack.push(21);
+  myStack.push(22);
+  //myStack.push(32);
+  //myStack.push(34);
 
+  /*
+  for (int i = 0; i < 4; ++i) {
+    myStack.pop();
+  }
+  */
+
+  cout << "The current top element is " << myStack.peek() << endl;
+  
+  
   return 0;
 }
