@@ -5,8 +5,9 @@ Queue Implementation with C++
 
 #include <iostream>
 #include <cstdlib>
+#include <ctime>
 
-#define DEFAULT_SIZE 20
+#define DEFAULT_SIZE 11
 
 
 // Define class of Queue
@@ -19,7 +20,7 @@ class Queue {
 public:             // public access
   Queue(int);       // constructor
   ~Queue();         // destructor
-  int size();
+  int maxSize();
   bool isFull();
   bool isEmpty();
   int head();
@@ -44,8 +45,8 @@ Queue::~Queue() {
 
 
 // Define method to return the size of the queue
-int Queue::size() {
-  return capacity;
+int Queue::maxSize() {
+  return capacity-1;
 }
 
 
@@ -69,18 +70,93 @@ bool Queue::isEmpty() {
 }
 
 
+// Define method to return the current head
+int Queue::head() {
+  if (isEmpty()) {
+    std::cout << "Error. Empty queue." << std::endl;
+    return -1;
+  } else {
+    return arr[headi];
+  }
+}
+
+
+// Define method to insert an element to the queue
+bool Queue::enqueue(int x) {
+  if (isFull()) {
+    std::cout << "Queue overflows." << std::endl;
+    return false;
+  } else {
+    std::cout << "Enqueuing " << x << std::endl;
+    arr[taili] = x;
+    if (++taili > capacity-1) {
+      taili = 0;
+    }
+    return true;
+  }	      
+}
+
+
+// Define method to remove an element from the queue
+int Queue::dequeue() {
+  if (isEmpty()) {
+    std::cout << "Queue underflows." << std::endl;
+    return -1;
+  } else {
+    std::cout << "Dequeuing " << head() << std::endl;
+    int oldHead = arr[headi];
+    if (++headi > capacity-1) {
+      headi = 0;
+    }
+    return oldHead;
+  }
+}
+
+
 
 // Main function
 int main() {
   using std::cout;
   using std::endl;
+
+  // Seeding random numbers
+  std::srand(std::time(nullptr));
   
-  //int chosenSize = 10;
-  //Queue q1(chosenSize);
-  Queue q1;
+  int chosen = 5;
+  Queue q1(chosen+1); // Queue has at most n-1 elements
+  //Queue q1;
 
   // Check the size allocated
-  cout << "Size of queue: " << q1.size() << endl;
+  cout << "Max size of queue is " << q1.maxSize() << endl;
+
+  // Check the current head
+  cout << "The current head is " << q1.head() << endl;
+
+  // Enqueue some random elements, values between 0 and 100
+  for (int i = 0; i < 7; ++i) {
+    q1.enqueue(std::rand() % 101);
+  }
+  
+  // Check the current head
+  cout << "The current head is " << q1.head() << endl;
+
+  // Dequeue some elements (FIFO)
+  for (int i = 0; i < 3; ++i) {
+    q1.dequeue();
+  }
+
+  // Check the current head
+  cout << "The current head is " << q1.head() << endl;
+
+  // Enqueue some more random elements, values between 0 and 100
+  for (int i = 0; i < 4; ++i) {
+    q1.enqueue(std::rand() % 101);
+  }
+
+  // Dequeue some more elements, until queue underflows
+  for (int i = 0; i < 6; ++i) {
+    q1.dequeue();
+  }
   
   return 0;
 }
