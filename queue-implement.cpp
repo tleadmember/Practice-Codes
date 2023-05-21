@@ -89,9 +89,12 @@ bool Queue::enqueue(int x) {
   } else {
     std::cout << "Enqueuing " << x << std::endl;
     arr[taili] = x;
+    /*
     if (++taili > capacity-1) {
       taili = 0;
     }
+    */
+    taili = ++taili % capacity;
     return true;
   }	      
 }
@@ -105,9 +108,12 @@ int Queue::dequeue() {
   } else {
     std::cout << "Dequeuing " << head() << std::endl;
     int oldHead = arr[headi];
+    /*
     if (++headi > capacity-1) {
       headi = 0;
     }
+    */
+    headi = ++headi % capacity;
     return oldHead;
   }
 }
