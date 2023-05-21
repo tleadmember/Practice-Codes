@@ -7,6 +7,7 @@ Stack Implementation Using C++ Class
 #include <cstdlib>
 
 
+/*
 // Define function to print an array
 void printarray(int array[], int length) {
   using std::cout;
@@ -16,37 +17,38 @@ void printarray(int array[], int length) {
   }
   cout << endl;
 }
+*/
 
 
 // Define the default size of the stack (constant)
-#define DEFAULT_SIZE 10
+#define DEFAULT_SIZE 20
 
 
 // Define stack using C++ class
 class Stack {
   int* arr;  // if no access specifier = private access specifier
-  int top;
+  int topIndex;
   int capacity;
   
 public:
-  Stack(int size = DEFAULT_SIZE);  // constructor, same name as class,
-				   // called when an object is created
+  Stack(int size);  // constructor, same name as class,
+		    // called when an object is created
   ~Stack();  // destructor, called when an object goes out of scope
 
   // Define common methods for a stack
   int size();
-  void push(int);
+  bool push(int);
   int pop();
-  int peek();
+  int top();
   bool isFull();
   bool isEmpty();
 };
 
 
 // Define constructor, outside of class body
-Stack::Stack(int size) {
+Stack::Stack(int size = DEFAULT_SIZE) { // default argument
   arr = new int[size];
-  top = -1;
+  topIndex = -1;
   capacity = size;
 }
 
@@ -63,49 +65,57 @@ int Stack::size() {
 }
  
 
-// Define push() method
-void Stack::push(int x) {
+// Define push() method to add a new element to the top
+bool Stack::push(int x) {
   // Check if stack overflows
   if (isFull()) {
-    std::cout << "Stack overflows. Program terminated." << std::endl;
-    exit(EXIT_FAILURE);
+    std::cout << "Stack overflows." << std::endl;
+    return false;
   } else {
-  // Push
-  std::cout << "Pushing " << x << std::endl;
-  arr[++top] = x;
+    // Push
+    std::cout << "Pushing " << x << std::endl;
+    arr[++topIndex] = x;
+    return true;
   }
 }
 
 
-// Define pop() method
+// Define pop() method to remove an element from the top
 int Stack::pop() {
   // Check if stack underflows
   if (isEmpty()) {
-    std::cout << "Stack underflows. Program terminated." << std::endl;
-    exit(EXIT_FAILURE);
+    std::cout << "Stack underflows." << std::endl;
+    return -1;
   } else {
-  // Pop
-  std::cout << "Popping " << arr[top] << std::endl;
-  return arr[top--];
+    // Pop
+    std::cout << "Popping " << top() << std::endl;
+    return arr[topIndex--];
   }
 }
 
 
 // Define isFull() method
 bool Stack::isFull() {
-  return (top == (capacity-1));
+  return (topIndex == (capacity-1));
 }
 
 
 // Define isEmpty() method
 bool Stack::isEmpty() {
-  return (top == -1);
+  return (topIndex == -1);
 }
 
 
-// Define peek() method
-int Stack::peek() {
-  return (arr[top]);
+// Define top() method to return the top element
+int Stack::top() {
+  // Check if stack is empty
+  if (isEmpty()) {
+    std::cout << "ERROR" << std::endl;
+    return -1;
+  } else {
+    // Otherwise, return top element
+    return (arr[topIndex]);
+  }
 }
 
 
@@ -115,26 +125,24 @@ int main() {
   using std::cout;
   using std::endl;
 
-  int chosen_size = 4;
-  Stack myStack(chosen_size); // if size not specified, Stack
-			      // constructor will use DEFAULT_SIZE???
+  int chosenSize = 5;
+  Stack myStack1(chosenSize);
+  Stack myStack2; // if size not specified, Stack
+		  // constructor will use DEFAULT_SIZE
 
-  cout << "Stack size is " << myStack.size() << endl;
+  cout << "Stack1 size is " << myStack1.size() << endl;
+  cout << "Stack2 size is " << myStack2.size() << endl;
 
-  myStack.push(20);
-  myStack.push(21);
-  myStack.push(22);
-  //myStack.push(32);
-  //myStack.push(34);
-
-  /*
-  for (int i = 0; i < 4; ++i) {
-    myStack.pop();
+  for (int i = 0; i < 3; ++i) {
+    myStack1.push(40+i);
   }
-  */
 
-  cout << "The current top element is " << myStack.peek() << endl;
-  
+  for (int i = 0; i < 5; ++i) {
+    myStack1.pop();
+  }
+
+  cout << "The current myStack1 top element is " << myStack1.top() << endl;
+
   
   return 0;
 }
