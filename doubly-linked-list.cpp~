@@ -1,6 +1,6 @@
 /* 
-TQBH - 2023-05-23
-Doubly Linked List in C++
+TQBH - 2023-05-22
+Singly Linked List in C++
 */
 
 
@@ -13,7 +13,6 @@ class Node {
 public:
   int key; // data for each element or node in linked list
   Node* next; // pointer to the next element/node
-  Node* prev;
 
   Node(int); // constructor
   //~Node(); // destructor
@@ -24,7 +23,6 @@ public:
 Node::Node(int newKey = 0) { // default newKey is 0
   key = newKey;
   next = nullptr;
-  prev = nullptr;
 }
 
 
@@ -73,15 +71,13 @@ void LinkedList::listPrepend(int newKey) {
   Node* newNode = new Node(newKey); // different from: new Node[#]
   
   // Add to list
-  if (head == nullptr) { // REDO THIS WITH MORE CASES OF head AND tail
-			 // BEING NULL
+  if (head == nullptr) {
     head = newNode;
     tail = newNode;
     //head->next = nullptr;
     //tail->next = nullptr;
   } else {
     newNode->next = head;
-    head->prev = newNode;
     head = newNode;
   }
 
