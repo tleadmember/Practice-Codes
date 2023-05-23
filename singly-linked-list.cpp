@@ -46,6 +46,7 @@ public:
   void listAddAAfterB(int, int); // method to add new element/node after
                                  // another node with specified key
   void listPrint();
+  void listDelete(int); // method to delete a node with specified key
 };
 
 
@@ -110,6 +111,8 @@ void LinkedList::listAddAAfterB(int newKey, int prevKey) {
     std::cout << "Added node with key " << newKey;
     std::cout << " after node with key " << prevKey << std::endl;
   }
+
+  return;
 }
 
 
@@ -127,6 +130,40 @@ void LinkedList::listPrint() {
 }
 
 
+// Definition
+void LinkedList::listDelete(int deleteKey) {
+  Node* tempNode1 = head, * tempNode2 = nullptr;
+
+  while ((tempNode1 != nullptr) && (tempNode1->key != deleteKey)) {
+    tempNode2 = tempNode1; // previous node
+    tempNode1 = tempNode1->next;
+  }
+
+  if (tempNode1 == nullptr) {
+    std::cout << "Could not find a node with key " << deleteKey;
+    std::cout << " to delete\n";
+    return;
+  } else {
+    if (tempNode1 == head && tempNode1 == tail) {
+      head = nullptr;
+      tail = nullptr;
+    } else if (tempNode1 == head) {
+      head = tempNode1->next;
+    } else if (tempNode1 == tail) {
+      tempNode2->next = nullptr;
+      tail = tempNode2;
+    } else {
+      tempNode2->next = tempNode1->next;
+    }
+
+    std::cout << "Deleted node with key " << deleteKey << std::endl;
+    delete tempNode1; // deallocate memory
+  }
+  
+  return;
+}  
+
+
 
 // Main function
 int main() {
@@ -138,6 +175,10 @@ int main() {
   L1.listPrint();
 
   L1.listAddAAfterB(10, 8);
+
+  L1.listPrint();
+
+  L1.listDelete(10);
 
   L1.listPrint();
  
