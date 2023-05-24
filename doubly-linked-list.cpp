@@ -61,11 +61,11 @@ LinkedList::LinkedList() {
 
 // Define destructor of class LinkedList
 LinkedList::~LinkedList() {
-  Node* newNode = head;
-  while (newNode != nullptr) {
-    Node* temp = newNode->next;
-    delete newNode;
-    newNode = temp;
+  Node* tempNode1 = head;
+  while (tempNode1 != nullptr) {
+    Node* tempNode2 = tempNode1->next;
+    delete tempNode1;
+    tempNode1 = tempNode2;
   }
 }
 
