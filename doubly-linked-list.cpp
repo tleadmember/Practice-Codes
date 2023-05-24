@@ -74,20 +74,16 @@ LinkedList::~LinkedList() {
 void LinkedList::listPrepend(int newKey) {
   // First, create new node
   Node* newNode = new Node(newKey); // different from: new Node[#]
-  
+
   // Add to list
-  if (head == nullptr && tail == nullptr) { // if 0 nodes
+  newNode->next = head;
+  
+  if (head == nullptr) { // add to empty list
     head = newNode;
     tail = newNode;
-  } else {                                 // otherwise
-    newNode->next = head;  // newNode->next = (*newNode).next
+  } else {               // add to list with at least 1 node already
     head->prev = newNode;
     head = newNode;
-    /*
-    if (newNode->next->next == nullptr) {  // if adding to only 1 node
-      tail->prev = head;
-    }
-    */
   }
 
   std::cout << "Prepended node with key " << newKey << std::endl;
