@@ -42,7 +42,7 @@ private:
   Node* head, * tail; // declare pointers-to-node for list head and tail
 public:
   LinkedList();  // constructor
-  //~LinkedList(); // destructor
+  ~LinkedList(); // destructor
 
   void listPrepend(int); // method to add new element/node as new head
   void listAddAAfterB(int, int); // method to add new element/node after
@@ -59,12 +59,15 @@ LinkedList::LinkedList() {
 }
 
 
-/*
 // Define destructor of class LinkedList
 LinkedList::~LinkedList() {
-  // no need because did not call "new" in class body
+  Node* newNode = head;
+  while (newNode != nullptr) {
+    Node* temp = newNode->next;
+    delete newNode;
+    newNode = temp;
+  }
 }
-*/
 
 
 // Definition
@@ -73,16 +76,18 @@ void LinkedList::listPrepend(int newKey) {
   Node* newNode = new Node(newKey); // different from: new Node[#]
   
   // Add to list
-  if (head == nullptr) { // REDO THIS WITH MORE CASES OF head AND tail
-			 // BEING NULL
+  if (head == nullptr && tail == nullptr) { // if 0 nodes
     head = newNode;
     tail = newNode;
-    //head->next = nullptr;
-    //tail->next = nullptr;
-  } else {
-    newNode->next = head;
+  } else {                                 // otherwise
+    newNode->next = head;  // newNode->next = (*newNode).next
     head->prev = newNode;
     head = newNode;
+    /*
+    if (newNode->next->next == nullptr) {  // if adding to only 1 node
+      tail->prev = head;
+    }
+    */
   }
 
   std::cout << "Prepended node with key " << newKey << std::endl;
@@ -107,8 +112,11 @@ void LinkedList::listAddAAfterB(int newKey, int prevKey) {
     return;
   } else {
     newNode->next = tempNode->next;
+    newNode->prev = tempNode;
     tempNode->next = newNode;
-    if (newNode->next == nullptr) {
+    if (newNode->next != nullptr) { // if not adding at the end of list
+      newNode->next->prev = newNode;
+    } else {                        // if adding at the end of list
       tail = newNode;
     }
     
@@ -136,10 +144,10 @@ void LinkedList::listPrint() {
 
 // Definition
 void LinkedList::listDelete(int deleteKey) {
-  Node* tempNode1 = head, * tempNode2 = nullptr;
+  Node* tempNode1 = head;// * tempNode2 = nullptr;
 
   while ((tempNode1 != nullptr) && (tempNode1->key != deleteKey)) {
-    tempNode2 = tempNode1; // previous node
+    //tempNode2 = tempNode1; // previous node
     tempNode1 = tempNode1->next;
   }
 
@@ -152,16 +160,18 @@ void LinkedList::listDelete(int deleteKey) {
       head = nullptr;
       tail = nullptr;
     } else if (tempNode1 == head) {
+      tempNode1->next->prev = nullptr;
       head = tempNode1->next;
     } else if (tempNode1 == tail) {
-      tempNode2->next = nullptr;
-      tail = tempNode2;
+      tempNode1->prev->next = nullptr;
+      tail = tempNode1->prev;
     } else {
-      tempNode2->next = tempNode1->next;
+      tempNode1->prev->next = tempNode1->next;
+      tempNode1->next->prev = tempNode1->prev;
     }
-
+    delete tempNode1;
+    
     std::cout << "Deleted node with key " << deleteKey << std::endl;
-    delete tempNode1; // deallocate memory
   }
   
   return;
