@@ -71,16 +71,12 @@ LinkedList::~LinkedList() {
 void LinkedList::listPrepend(int newKey) {
   // First, create new node
   Node* newNode = new Node(newKey); // different from: new Node[#]
-  
+
   // Add to list
-  if (head == nullptr) {
-    head = newNode;
+  newNode->next = head;
+  head = newNode;
+  if (head->next == nullptr) { // added to empty list
     tail = newNode;
-    //head->next = nullptr;
-    //tail->next = nullptr;
-  } else {
-    newNode->next = head;
-    head = newNode;
   }
 
   std::cout << "Prepended node with key " << newKey << std::endl;
@@ -106,7 +102,7 @@ void LinkedList::listAddAAfterB(int newKey, int prevKey) {
   } else {
     newNode->next = tempNode->next;
     tempNode->next = newNode;
-    if (newNode->next == nullptr) {
+    if (newNode->next == nullptr) { // adding at the end
       tail = newNode;
     }
     
@@ -137,7 +133,7 @@ void LinkedList::listDelete(int deleteKey) {
   Node* tempNode1 = head, * tempNode2 = nullptr;
 
   while ((tempNode1 != nullptr) && (tempNode1->key != deleteKey)) {
-    tempNode2 = tempNode1; // previous node
+    tempNode2 = tempNode1;
     tempNode1 = tempNode1->next;
   }
 
