@@ -7,8 +7,7 @@ Singly Linked List in C++
 #include <iostream>
 
 
-// Define class Node - Q: WE CANNOT CALL Node* newNode = new Node; INSIDE
-// OF CLASS NODE CONSTRUCTOR BECAUSE THAT IS A NEVER-ENDING LOOP?
+// Define class Node
 class Node {
 public:
   int key; // data for each element or node in linked list
@@ -40,7 +39,7 @@ private:
   Node* head, * tail; // declare pointers-to-node for list head and tail
 public:
   LinkedList();  // constructor
-  //~LinkedList(); // destructor
+  ~LinkedList(); // destructor
 
   void listPrepend(int); // method to add new element/node as new head
   void listAddAAfterB(int, int); // method to add new element/node after
@@ -57,12 +56,15 @@ LinkedList::LinkedList() {
 }
 
 
-/*
 // Define destructor of class LinkedList
 LinkedList::~LinkedList() {
-  // no need because did not call "new" in class body
+  Node* tempNode1 = head, * tempNode2 = nullptr;
+  while (tempNode1 != nullptr) {
+    tempNode2 = tempNode1->next;
+    delete tempNode1;
+    tempNode1 = tempNode2;
+  }
 }
-*/
 
 
 // Definition
