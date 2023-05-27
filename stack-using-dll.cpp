@@ -60,11 +60,31 @@ Stack::~Stack() {
 }
 
 
-
 int Stack::pop() {
+  Node* tempNode = tail;
 
+  --count;
+
+  if (head == nullptr) {  // empty stack
+    std::cout << "Error. Cannot pop an empty stack.\n";
+    return -1;
+  } else {
+    if (head == tail) {  // stack with one node
+      head = nullptr;
+      tail = nullptr;
+    } else { // stack with more than one node
+      tempNode->prev->next = nullptr;
+      tail = tempNode->prev;
+    }
+  }
+
+  tempKey = tempNode->key;
+  delete tempNode;
+  return tempKey;
 }
 
+
+//push() 
 
 
 int main() {
