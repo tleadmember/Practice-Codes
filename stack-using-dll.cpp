@@ -49,6 +49,7 @@ Stack::Stack() { // stack using linked list, no need to specify length
   tail = nullptr;
 }
 
+
 Stack::~Stack() {
   Node* tempNode1 = head, * tempNode2;
   while (tempNode1 != nullptr) {
@@ -60,8 +61,16 @@ Stack::~Stack() {
 
 
 
+int Stack::pop() {
+
+}
+
+
+
 int main() {
   Stack stack1();
+
+  
 
   return 0;
 }
