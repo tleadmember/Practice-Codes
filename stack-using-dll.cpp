@@ -38,8 +38,9 @@ public:
   void push(int);
   int top();
   int size();
-  bool isFull();
-  bool isEmpty();
+  //bool isFull();
+  //bool isEmpty();
+  void print();
 };
 
 
@@ -78,19 +79,78 @@ int Stack::pop() {
     }
   }
 
-  tempKey = tempNode->key;
+  int tempKey = tempNode->key;
   delete tempNode;
   return tempKey;
 }
 
 
-//push() 
+void Stack::push(int newKey) {
+  Node* newNode = new Node(newKey);
+
+  ++count;
+
+  if (head == nullptr) {  // empty stack
+    head = newNode;
+    tail = newNode;
+  } else { // stack with at least one node
+    newNode->prev = tail;
+    tail->next = newNode;
+    tail = newNode;    
+  }
+  
+  return;
+}
+
+
+int Stack::top() {
+  if (head == nullptr) {
+    std::cout << "Error. Empty stack. No top node.\n";
+    return -1;
+  } else {
+    return tail->key;
+  }
+}
+
+
+int Stack::size() {
+  return count;
+}
+
+
+void Stack::print() {
+  Node* tempNode = head;
+  while (tempNode != nullptr) {
+    std::cout << tempNode->key << " -> ";
+    tempNode = tempNode->next;
+  }
+  std::cout << " -> NULL\n";
+}
+
 
 
 int main() {
-  Stack stack1();
+  Stack stack1;
 
-  
+  std::cout << "Current stack size: " << stack1.size() << std::endl;
+  std::cout << "Current stack top: " << stack1.top() << std::endl;
+
+  stack1.push(1);
+  stack1.push(2);
+  stack1.push(3);
+
+  std::cout << "Current stack size: " << stack1.size() << std::endl;
+  std::cout << "Current stack top: " << stack1.top() << std::endl;
+  std::cout << "Print current stack: " << std::endl;
+  stack1.print();
+
+  stack1.pop();
+
+  std::cout << "Current stack size: " << stack1.size() << std::endl;
+  std::cout << "Current stack top: " << stack1.top() << std::endl;
+  std::cout << "Print current stack: " << std::endl;
+  stack1.print();
+
 
   return 0;
 }
