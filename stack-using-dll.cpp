@@ -61,7 +61,7 @@ Stack::~Stack() {
 
 
 int main() {
-  //Stack myStack();
+  Stack stack1();
 
   return 0;
 }
