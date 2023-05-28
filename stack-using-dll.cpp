@@ -28,8 +28,8 @@ Node::Node(int newKey = 0) { //constructor
 class Stack {
 private:
   int count;
-  Node *head;
-  Node *tail;
+  Node* head;
+  Node* tail;
 public:
   Stack(); //constructor
   ~Stack(); //destructor
