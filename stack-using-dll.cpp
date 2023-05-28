@@ -67,7 +67,7 @@ int Stack::pop() {
   --count;
 
   if (head == nullptr) {  // empty stack
-    std::cout << "Error. Cannot pop an empty stack.\n";
+    std::cout << "Error. Stack underflows.\n";
     return -1;
   } else {
     if (head == tail) {  // stack with one node
