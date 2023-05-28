@@ -124,7 +124,7 @@ void Stack::print() {
     std::cout << tempNode->key << " -> ";
     tempNode = tempNode->next;
   }
-  std::cout << " -> NULL\n";
+  std::cout << " NULL\n";
 }
 
 
@@ -135,9 +135,9 @@ int main() {
   std::cout << "Current stack size: " << stack1.size() << std::endl;
   std::cout << "Current stack top: " << stack1.top() << std::endl;
 
-  stack1.push(1);
-  stack1.push(2);
-  stack1.push(3);
+  stack1.push(5);
+  stack1.push(10);
+  stack1.push(15);
 
   std::cout << "Current stack size: " << stack1.size() << std::endl;
   std::cout << "Current stack top: " << stack1.top() << std::endl;
