@@ -44,7 +44,7 @@ public:
 };
 
 
-Queue:Queue() { // stack using linked list, no need to specify length
+Queue::Queue() { // stack using linked list, no need to specify length
   count = 0;
   head = nullptr;
   tail = nullptr;
