@@ -34,9 +34,9 @@ public:
   Queue(); //constructor
   ~Queue(); //destructor
 
-  int pop();      // other utility functions
-  void push(int);
-  int top();
+  int dequeue();       // other utility functions
+  void enqueue(int);
+  int front();
   int size();
   //bool isFull();
   //bool isEmpty();
@@ -61,7 +61,7 @@ Queue::~Queue() {
 }
 
 
-int Queue::pop() {
+int Queue::dequeue() {
   Node* tempNode = tail;
 
   --count;
@@ -85,7 +85,7 @@ int Queue::pop() {
 }
 
 
-void Queue::push(int newKey) {
+void Queue::enqueue(int newKey) {
   Node* newNode = new Node(newKey);
 
   ++count;
@@ -103,12 +103,12 @@ void Queue::push(int newKey) {
 }
 
 
-int Queue::top() {
+int Queue::front() {
   if (head == nullptr) {
-    std::cout << "Error. Empty stack. No top node.\n";
+    std::cout << "Error. Empty queue. No head.\n";
     return -1;
   } else {
-    return tail->key;
+    return head->key;
   }
 }
 
@@ -134,22 +134,22 @@ int main() {
   Queue q1;
 
   std::cout << "Current queue size: " << q1.size() << std::endl;
-  std::cout << "Current queue top: " << q1.top() << std::endl;
+  std::cout << "Current queue front: " << q1.front() << std::endl;
 
-  q1.push(5);
-  q1.push(10);
-  q1.push(15);
+  q1.enqueue(5);
+  q1.enqueue(10);
+  q1.enqueue(15);
 
   std::cout << "Current queue size: " << q1.size() << std::endl;
-  std::cout << "Current queue top: " << q1.top() << std::endl;
-  std::cout << "Print current queue: " << std::endl;
+  std::cout << "Current queue front: " << q1.front() << std::endl;
+  std::cout << "Print current queue: ";
   q1.print();
 
-  q1.pop();
+  q1.dequeue(); // FIFO
 
   std::cout << "Current queue size: " << q1.size() << std::endl;
-  std::cout << "Current queue top: " << q1.top() << std::endl;
-  std::cout << "Print current queue: " << std::endl;
+  std::cout << "Current queue front: " << q1.front() << std::endl;
+  std::cout << "Print current queue: ";
   q1.print();
 
 
