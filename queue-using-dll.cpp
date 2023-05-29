@@ -25,14 +25,14 @@ Node::Node(int newKey = 0) { //constructor
 
 
 
-class Stack {
+class Queue {
 private:
   int count;
   Node* head;
   Node* tail;
 public:
-  Stack(); //constructor
-  ~Stack(); //destructor
+  Queue(); //constructor
+  ~Queue(); //destructor
 
   int pop();      // other utility functions
   void push(int);
@@ -44,14 +44,14 @@ public:
 };
 
 
-Stack::Stack() { // stack using linked list, no need to specify length
+Queue:Queue() { // stack using linked list, no need to specify length
   count = 0;
   head = nullptr;
   tail = nullptr;
 }
 
 
-Stack::~Stack() {
+Queue::~Queue() {
   Node* tempNode1 = head, * tempNode2;
   while (tempNode1 != nullptr) {
     tempNode2 = tempNode1->next;
@@ -61,7 +61,7 @@ Stack::~Stack() {
 }
 
 
-int Stack::pop() {
+int Queue::pop() {
   Node* tempNode = tail;
 
   --count;
@@ -85,7 +85,7 @@ int Stack::pop() {
 }
 
 
-void Stack::push(int newKey) {
+void Queue::push(int newKey) {
   Node* newNode = new Node(newKey);
 
   ++count;
@@ -103,7 +103,7 @@ void Stack::push(int newKey) {
 }
 
 
-int Stack::top() {
+int Queue::top() {
   if (head == nullptr) {
     std::cout << "Error. Empty stack. No top node.\n";
     return -1;
@@ -113,12 +113,12 @@ int Stack::top() {
 }
 
 
-int Stack::size() {
+int Queue::size() {
   return count;
 }
 
 
-void Stack::print() {
+void Queue::print() {
   Node* tempNode = head;
   while (tempNode != nullptr) {
     std::cout << tempNode->key << " -> ";
@@ -131,26 +131,26 @@ void Stack::print() {
 
 
 int main() {
-  Stack stack1;
+  Queue q1;
 
-  std::cout << "Current stack size: " << stack1.size() << std::endl;
-  std::cout << "Current stack top: " << stack1.top() << std::endl;
+  std::cout << "Current queue size: " << q1.size() << std::endl;
+  std::cout << "Current queue top: " << q1.top() << std::endl;
 
-  stack1.push(5);
-  stack1.push(10);
-  stack1.push(15);
+  q1.push(5);
+  q1.push(10);
+  q1.push(15);
 
-  std::cout << "Current stack size: " << stack1.size() << std::endl;
-  std::cout << "Current stack top: " << stack1.top() << std::endl;
-  std::cout << "Print current stack: " << std::endl;
-  stack1.print();
+  std::cout << "Current queue size: " << q1.size() << std::endl;
+  std::cout << "Current queue top: " << q1.top() << std::endl;
+  std::cout << "Print current queue: " << std::endl;
+  q1.print();
 
-  stack1.pop();
+  q1.pop();
 
-  std::cout << "Current stack size: " << stack1.size() << std::endl;
-  std::cout << "Current stack top: " << stack1.top() << std::endl;
-  std::cout << "Print current stack: " << std::endl;
-  stack1.print();
+  std::cout << "Current queue size: " << q1.size() << std::endl;
+  std::cout << "Current queue top: " << q1.top() << std::endl;
+  std::cout << "Print current queue: " << std::endl;
+  q1.print();
 
 
   return 0;
