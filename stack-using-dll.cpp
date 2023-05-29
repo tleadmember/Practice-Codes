@@ -124,7 +124,8 @@ void Stack::print() {
     std::cout << tempNode->key << " -> ";
     tempNode = tempNode->next;
   }
-  std::cout << " NULL\n";
+  std::cout << "NULL\n";
+  return;
 }
 
 
