@@ -1,5 +1,5 @@
 /*
-TQBH - 2023-05-28
+TQBH - 2023-05-28,29
 Queue Implementation Using Doubly Linked List
 */
 
@@ -44,7 +44,7 @@ public:
 };
 
 
-Queue::Queue() { // stack using linked list, no need to specify length
+Queue::Queue() { // queue using linked list, no need to specify length
   count = 0;
   head = nullptr;
   tail = nullptr;
@@ -62,20 +62,20 @@ Queue::~Queue() {
 
 
 int Queue::dequeue() {
-  Node* tempNode = tail;
+  Node* tempNode = head;
 
   --count;
 
-  if (head == nullptr) {  // empty stack
-    std::cout << "Error. Stack underflows.\n";
+  if (head == nullptr) {  // empty queue
+    std::cout << "Error. Queue underflows.\n";
     return -1;
   } else {
-    if (head == tail) {  // stack with one node
+    if (head == tail) {  // queue with one node
       head = nullptr;
       tail = nullptr;
-    } else { // stack with more than one node
-      tempNode->prev->next = nullptr;
-      tail = tempNode->prev;
+    } else { // queue with more than one node
+      tempNode->next->prev = nullptr;
+      head = tempNode->next;
     }
   }
 
@@ -90,10 +90,10 @@ void Queue::enqueue(int newKey) {
 
   ++count;
 
-  if (head == nullptr) {  // empty stack
+  if (head == nullptr) {  // empty queue
     head = newNode;
     tail = newNode;
-  } else { // stack with at least one node
+  } else { // queue with at least one node
     newNode->prev = tail;
     tail->next = newNode;
     tail = newNode;    
@@ -146,6 +146,13 @@ int main() {
   q1.print();
 
   q1.dequeue(); // FIFO
+
+  std::cout << "Current queue size: " << q1.size() << std::endl;
+  std::cout << "Current queue front: " << q1.front() << std::endl;
+  std::cout << "Print current queue: ";
+  q1.print();
+
+  q1.enqueue(20);
 
   std::cout << "Current queue size: " << q1.size() << std::endl;
   std::cout << "Current queue front: " << q1.front() << std::endl;
