@@ -126,7 +126,6 @@ void LinkedList::listAddAAfterB(int newKey, int prevKey) {
 
 // Definition
 void LinkedList::listPrint() {
-  std::cout << "List: ";
   // Traverse the list and print each node key
   Node* tempNode = head;
   while (tempNode != nullptr) {
@@ -171,7 +170,28 @@ void LinkedList::listDelete(int deleteKey) {
   }
   
   return;
-}  
+}
+
+
+
+// Class definition
+class HashTable {
+public:
+  LinkedList* hTable;
+
+  HashTable(int); // constructor
+  ~HashTable(); // destructor
+};
+
+
+HashTable::HashTable(int len = 10) {
+  hTable = new LinkedList[len]; // array of linked lists
+}
+
+
+HashTable::~HashTable() {
+  delete[] hTable;
+}
 
 
 
@@ -180,7 +200,7 @@ int main() {
   LinkedList L1; // create
   LinkedList L2;
   int tableLen = 2;
-  LinkedList* hashTable = new LinkedList[tableLen];
+  HashTable hashTable(tableLen);
   
   L1.listPrepend(9);
   L1.listPrepend(8);
@@ -192,26 +212,22 @@ int main() {
   L2.listPrepend(3);
   L2.listPrint();
 
-  hashTable[0] = L1;
-  hashTable[1] = L2;
+  hashTable.hTable[0] = L1;
+  hashTable.hTable[1] = L2;
 
-  hashTable[1].listPrepend(2);
+  hashTable.hTable[1].listPrepend(2);
 
   std::cout << std::endl;
 
   for (int i = 0; i < tableLen; ++i) {
-    std::cout << "Chain " << i+1 << ": ";
-    hashTable[i].listPrint();
+    std::cout << i  << " ---> ";
+    hashTable.hTable[i].listPrint();
     std::cout << std::endl;
   }
 
 
-  Node** hashTable2 = new Node*[tableLen];
+  //delete[] hashTable;  // error - double free detected in tcache2
 
-
-  delete[] hashTable;
-
-  for
   
   return 0;
 }
