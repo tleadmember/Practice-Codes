@@ -188,6 +188,7 @@ public:
   void htPrint();
   void htInsert(int);
   int hashFunction(int);
+  void htDelete(int);
 };
 
 
@@ -226,10 +227,11 @@ int HashTable::hashFunction(int newKey) {
   
   int l = log2(tableLength);
   unsigned long long int c = pow(2, 62); // 64 bits causes overflowing
-  double A = static_cast<double>(std::rand()) / RAND_MAX; // random
+  //double A = static_cast<double>(std::rand()) / RAND_MAX; // random
 							  // number
 							  // between 0
 							  // and 1
+  double A = 0.2884;
   unsigned long long int a = A*c;
   unsigned long long int ka = newKey * a;
   int index = (ka % c) >> (62-l);
@@ -251,6 +253,12 @@ int HashTable::hashFunction(int newKey) {
 }
 
 
+void HashTable::htDelete(int deleteKey){
+  int index = hashFunction(deleteKey);
+  hTable[index]->listDelete(deleteKey);
+}
+
+
 
 // Main function
 int main() {
@@ -263,8 +271,13 @@ int main() {
   ht1.htPrint();
 
   for (int key = 1; key < 11; ++key) {
-    ht1.htInsert(std::rand());
+    ht1.htInsert(key);
   }
+
+  ht1.htPrint();
+
+  int deleteKey = 4;
+  ht1.htDelete(deleteKey);
 
   ht1.htPrint();
   
