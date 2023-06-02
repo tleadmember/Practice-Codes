@@ -5,6 +5,8 @@ Hash Table in C++
 
 
 #include <iostream>
+#include <cmath>
+#include <ctime>
 
 
 // Define class Node - Q: WE CANNOT CALL Node* newNode = new Node; INSIDE
@@ -183,7 +185,9 @@ public:
   HashTable(int); // constructor
   ~HashTable(); // destructor
 
-  void htprint();
+  void htPrint();
+  void htInsert(int);
+  int hashFunction(int);
 };
 
 
@@ -204,22 +208,65 @@ HashTable::~HashTable() {
 }
 
 
-void HashTable::htprint() {
+void HashTable::htPrint() {
   for (int i = 0; i < tableLength; ++i) {
     std::cout << i << " ---> ";
     hTable[i]->listPrint();
-    std:: cout << std::endl;
   }
+}
+
+
+void HashTable::htInsert(int newKey) {
+  int index = hashFunction(newKey);
+  hTable[index]->listPrepend(newKey);
+}
+
+
+int HashTable::hashFunction(int newKey) {
+  
+  int l = log2(tableLength);
+  unsigned long long int c = pow(2, 62); // 64 bits causes overflowing
+  double A = static_cast<double>(std::rand()) / RAND_MAX; // random
+							  // number
+							  // between 0
+							  // and 1
+  unsigned long long int a = A*c;
+  unsigned long long int ka = newKey * a;
+  int index = (ka % c) >> (62-l);
+  return index;
+  
+  /*
+  double A = static_cast<double>(std::rand()) / RAND_MAX; // RAND_MAX promoted
+							  // to double
+  double kA_double = newKey * A; // newKey promoted to double because
+				 // A is of type double
+  int kA_floor = newKey * A; // truncated when assigned to int kA_floor
+  int index = (kA_double - kA_floor) * tableLength;
+  return index;
+  */
+  /*
+  int index = newKey % tableLength;
+  return index;
+  */
 }
 
 
 
 // Main function
 int main() {
-  int slots = 5;
+  std::srand(std::time(nullptr));
+
+  int l = 3;
+  int slots = pow(2, l);
   HashTable ht1(slots);
   
-  ht1.htprint();
+  ht1.htPrint();
+
+  for (int key = 1; key < 11; ++key) {
+    ht1.htInsert(std::rand());
+  }
+
+  ht1.htPrint();
   
   return 0;
 }
