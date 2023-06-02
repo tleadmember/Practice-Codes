@@ -1,5 +1,5 @@
 /* 
-TQBH - 2023-05-31
+TQBH - 2023-05-31, 06-01
 Hash Table in C++
 */
 
@@ -176,58 +176,50 @@ void LinkedList::listDelete(int deleteKey) {
 
 // Class definition
 class HashTable {
+private:
+  LinkedList** hTable; // double pointer (array of pointers)
+  int tableLength;
 public:
-  LinkedList* hTable;
-
   HashTable(int); // constructor
   ~HashTable(); // destructor
+
+  void htprint();
 };
 
 
 HashTable::HashTable(int len = 10) {
-  hTable = new LinkedList[len]; // array of linked lists
+  tableLength = len;
+  hTable = new LinkedList*[len]; // array of linked list pointers
+  for (int i = 0; i < len; ++i) {
+    hTable[i] = new LinkedList; // linked list pointer
+  }
 }
 
 
 HashTable::~HashTable() {
-  delete[] hTable;
+  for (int i = 0; i < tableLength; ++i) {
+    delete hTable[i]; // deallocate memory pointed to by pointer
+  }
+  delete[] hTable; // deallocate array pointer memory
+}
+
+
+void HashTable::htprint() {
+  for (int i = 0; i < tableLength; ++i) {
+    std::cout << i << " ---> ";
+    hTable[i]->listPrint();
+    std:: cout << std::endl;
+  }
 }
 
 
 
 // Main function
 int main() {
-  LinkedList L1; // create
-  LinkedList L2;
-  int tableLen = 2;
-  HashTable hashTable(tableLen);
+  int slots = 5;
+  HashTable ht1(slots);
   
-  L1.listPrepend(9);
-  L1.listPrepend(8);
-  L1.listAddAAfterB(10,8);
-  L1.listPrint();
-
-  L2.listPrepend(5);
-  L2.listPrepend(4);
-  L2.listPrepend(3);
-  L2.listPrint();
-
-  hashTable.hTable[0] = L1;
-  hashTable.hTable[1] = L2;
-
-  hashTable.hTable[1].listPrepend(2);
-
-  std::cout << std::endl;
-
-  for (int i = 0; i < tableLen; ++i) {
-    std::cout << i  << " ---> ";
-    hashTable.hTable[i].listPrint();
-    std::cout << std::endl;
-  }
-
-
-  //delete[] hashTable;  // error - double free detected in tcache2
-
+  ht1.htprint();
   
   return 0;
 }
