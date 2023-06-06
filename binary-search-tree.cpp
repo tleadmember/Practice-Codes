@@ -44,7 +44,7 @@ public:
   void assignRoot(Node*);
   void inorderTreeWalk(Node*);
   //void destroyRecursive(Node*);
-  Node* recursiveTreeSearch(int);
+  Node* recursiveTreeSearch(Node*, int);
 };
 
 
@@ -85,8 +85,8 @@ void BST::inorderTreeWalk(Node* node) {
 }
 
 
-Node* BST::recursiveTreeSearch(int searchKey) {
-  Node* temp = root;
+Node* BST::recursiveTreeSearch(Node* subroot, int searchKey) {
+  Node* temp = subroot;
   while (temp != nullptr && temp->key != searchKey) {
     if (temp->key > searchKey) {
       temp = temp->left;
@@ -133,7 +133,7 @@ int main() {
 
   // Search
   int targetKey = 9;
-  Node* returnNode = t1.recursiveTreeSearch(targetKey);
+  Node* returnNode = t1.recursiveTreeSearch(t1.root, targetKey);
   if (returnNode == nullptr) {
     std::cout << "Key " << targetKey << " not found.\n";
   } else {
