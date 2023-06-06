@@ -27,7 +27,7 @@ Node::Node(int newKey = 0) {
 
 
 Node::~Node() {
-  std::cout << "Node destructor called.\n";
+  //std::cout << "Node destructor called.\n";
   delete left;
   delete right;
 }
@@ -35,15 +35,16 @@ Node::~Node() {
 
 
 class BST {
-private:
-  Node* root;
 public:
+  Node* root;
+  
   BST();
   ~BST();
 
   void assignRoot(Node*);
   void inorderTreeWalk(Node*);
-  void destroyRecursive(Node*);
+  //void destroyRecursive(Node*);
+  Node* recursiveTreeSearch(int);
 };
 
 
@@ -53,7 +54,7 @@ BST::BST() {
 
 
 BST::~BST() {
-  std::cout << "BST destructor called.\n";
+  //std::cout << "BST destructor called.\n";
   delete root;
 
   //destroyRecursive(root);
@@ -81,6 +82,19 @@ void BST::inorderTreeWalk(Node* node) {
     std::cout << node->key << "  ";
     inorderTreeWalk(node->right);
   }
+}
+
+
+Node* BST::recursiveTreeSearch(int searchKey) {
+  Node* temp = root;
+  while (temp != nullptr && temp->key != searchKey) {
+    if (temp->key > searchKey) {
+      temp = temp->left;
+    } else {
+      temp = temp->right;
+    }
+  }
+  return temp;
 }
 
 
@@ -114,8 +128,18 @@ int main() {
   n6->p = n3;
 
   // Print BST in order
-  t1.inorderTreeWalk(n1);
+  t1.inorderTreeWalk(t1.root);
   std::cout << std::endl;
+
+  // Search
+  int targetKey = 9;
+  Node* returnNode = t1.recursiveTreeSearch(targetKey);
+  if (returnNode == nullptr) {
+    std::cout << "Key " << targetKey << " not found.\n";
+  } else {
+    std::cout << "Search returns: " << returnNode->key << std::endl;
+  }
+  
   
   return 0;
 }
