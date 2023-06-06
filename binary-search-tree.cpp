@@ -45,6 +45,8 @@ public:
   void inorderTreeWalk(Node*);
   //void destroyRecursive(Node*);
   Node* recursiveTreeSearch(Node*, int);
+  Node* treeMin(Node*);
+  Node* treeMax(Node*);
 };
 
 
@@ -98,6 +100,30 @@ Node* BST::recursiveTreeSearch(Node* subroot, int searchKey) {
 }
 
 
+Node* BST::treeMin(Node* subroot) {
+  Node* temp = subroot;
+  if (temp == nullptr) { // empty subtree input
+    return nullptr;
+  }
+  while (temp->left != nullptr) {
+    temp = temp->left;
+  }
+  return temp;
+}
+
+
+Node* BST::treeMax(Node* subroot) {
+  Node* temp = subroot;
+  if (temp == nullptr) { // empty subtree input
+    return nullptr;
+  }
+  while (temp->right != nullptr) {
+    temp = temp->right;
+  }
+  return temp;
+}
+
+
 
 int main() {
   BST t1;
@@ -139,6 +165,12 @@ int main() {
   } else {
     std::cout << "Search returns: " << returnNode->key << std::endl;
   }
+
+  // Max
+  std::cout << "Tree max: " << t1.treeMax(t1.root)->key << std::endl;
+
+  // Min
+  std::cout << "Tree min: " << t1.treeMin(t1.root)->key << std::endl;
   
   
   return 0;
