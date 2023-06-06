@@ -47,6 +47,8 @@ public:
   Node* recursiveTreeSearch(Node*, int);
   Node* treeMin(Node*);
   Node* treeMax(Node*);
+  Node* successor(int);
+  Node* predecessor(int);
 };
 
 
@@ -124,6 +126,44 @@ Node* BST::treeMax(Node* subroot) {
 }
 
 
+Node* BST::successor(int targetKey) {
+  Node* node = recursiveTreeSearch(root, targetKey);
+  if (node == nullptr) {
+    return nullptr;
+  }
+  if (node->right != nullptr) { // if node has a right child
+    return treeMin(node->right);
+  } else { // if node has no right child
+    Node* tempCh = node;
+    Node* tempPa = node->p;
+    while (tempPa != nullptr && tempPa->left != tempCh) {
+      tempCh = tempPa;
+      tempPa = tempPa->p;
+    }
+    return tempPa;
+  }
+}
+
+
+Node* BST::predecessor(int targetKey) {
+  Node* node = recursiveTreeSearch(root, targetKey);
+  if (node == nullptr) {
+    return nullptr;
+  }
+  if (node->left != nullptr) {
+    return treeMax(node->left);
+  } else {
+    Node* tempCh = node;
+    Node* tempPa = node->p;
+    while (tempPa != nullptr && tempPa->right != tempCh) {
+      tempCh = tempPa;
+      tempPa = tempPa->p;
+    }
+    return tempPa;
+  }
+}
+
+
 
 int main() {
   BST t1;
@@ -158,10 +198,10 @@ int main() {
   std::cout << std::endl;
 
   // Search
-  int targetKey = 9;
-  Node* returnNode = t1.recursiveTreeSearch(t1.root, targetKey);
+  int targetKey1 = 9;
+  Node* returnNode = t1.recursiveTreeSearch(t1.root, targetKey1);
   if (returnNode == nullptr) {
-    std::cout << "Key " << targetKey << " not found.\n";
+    std::cout << "Key " << targetKey1 << " not found.\n";
   } else {
     std::cout << "Search returns: " << returnNode->key << std::endl;
   }
@@ -171,6 +211,16 @@ int main() {
 
   // Min
   std::cout << "Tree min: " << t1.treeMin(t1.root)->key << std::endl;
+
+  // Successor
+  int targetKey2 = 2;
+  std::cout << "Successor of " << targetKey2 << ": ";
+  std::cout << t1.successor(targetKey2)->key << std::endl;
+
+  // Predecessor
+  int targetKey3 = 8;
+  std::cout << "Predecessor of " << targetKey3 << ": ";
+  std::cout << t1.predecessor(targetKey3)->key << std::endl;
   
   
   return 0;
