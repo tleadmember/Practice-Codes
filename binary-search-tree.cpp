@@ -44,11 +44,12 @@ public:
   void assignRoot(Node*);
   void inorderTreeWalk(Node*);
   //void destroyRecursive(Node*);
-  Node* recursiveTreeSearch(Node*, int);
+  Node* iterativeTreeSearch(Node*, int);
   Node* treeMin(Node*);
   Node* treeMax(Node*);
   Node* successor(int);
   Node* predecessor(int);
+  void treeInsert(int);
 };
 
 
@@ -89,7 +90,7 @@ void BST::inorderTreeWalk(Node* node) {
 }
 
 
-Node* BST::recursiveTreeSearch(Node* subroot, int searchKey) {
+Node* BST::iterativeTreeSearch(Node* subroot, int searchKey) {
   Node* temp = subroot;
   while (temp != nullptr && temp->key != searchKey) {
     if (temp->key > searchKey) {
@@ -127,7 +128,7 @@ Node* BST::treeMax(Node* subroot) {
 
 
 Node* BST::successor(int targetKey) {
-  Node* node = recursiveTreeSearch(root, targetKey);
+  Node* node = iterativeTreeSearch(root, targetKey);
   if (node == nullptr) {
     return nullptr;
   }
@@ -146,7 +147,7 @@ Node* BST::successor(int targetKey) {
 
 
 Node* BST::predecessor(int targetKey) {
-  Node* node = recursiveTreeSearch(root, targetKey);
+  Node* node = iterativeTreeSearch(root, targetKey);
   if (node == nullptr) {
     return nullptr;
   }
@@ -161,6 +162,31 @@ Node* BST::predecessor(int targetKey) {
     }
     return tempPa;
   }
+}
+
+
+void BST::treeInsert(int newKey) { // insert at leaf level
+  Node* newNode = new Node(newKey);
+  Node* temp1 = root;
+  Node* temp2 = nullptr;
+  while (temp1 != nullptr) { // iterate down to leaf level
+    temp2 = temp1;
+    if (newNode->key < temp1->key) {
+      temp1 = temp1->left;
+    } else {
+      temp1 = temp1->right;
+    }
+  }
+  newNode->p = temp2;
+  if (temp2 == nullptr) { // empty tree
+    root = newNode;
+  } else if (newNode->key < temp2->key) {
+    temp2->left = newNode;
+  } else {
+    temp2->right = newNode;
+  }
+
+  std::cout << "Inserted node with key " << newKey << std::endl;
 }
 
 
@@ -199,7 +225,7 @@ int main() {
 
   // Search
   int targetKey1 = 9;
-  Node* returnNode = t1.recursiveTreeSearch(t1.root, targetKey1);
+  Node* returnNode = t1.iterativeTreeSearch(t1.root, targetKey1);
   if (returnNode == nullptr) {
     std::cout << "Key " << targetKey1 << " not found.\n";
   } else {
@@ -221,6 +247,17 @@ int main() {
   int targetKey3 = 8;
   std::cout << "Predecessor of " << targetKey3 << ": ";
   std::cout << t1.predecessor(targetKey3)->key << std::endl;
+
+  // Tree insert
+  t1.treeInsert(4);
+
+  // Print BST in order, again
+  t1.inorderTreeWalk(t1.root);
+  std::cout << std::endl;
+
+  // Check successor of 2 now
+  std::cout << "Successor of " << targetKey2 << ": ";
+  std::cout << t1.successor(targetKey2)->key << std::endl;
   
   
   return 0;
