@@ -41,14 +41,13 @@ public:
   BST();
   ~BST();
 
-  void assignRoot(Node*);
   void inorderTreeWalk(Node*);
   //void destroyRecursive(Node*);
   Node* iterativeTreeSearch(Node*, int);
   Node* treeMin(Node*);
   Node* treeMax(Node*);
-  Node* successor(int);
-  Node* predecessor(int);
+  Node* treeSuccessor(int);
+  Node* treePredecessor(int);
   void treeInsert(int);
 };
 
@@ -74,11 +73,6 @@ void BST::destroyRecursive(Node* node) {
   }
 }
 */
-
-
-void BST::assignRoot(Node* node) {
-  root = node;
-}
 
 
 void BST::inorderTreeWalk(Node* node) {
@@ -127,7 +121,7 @@ Node* BST::treeMax(Node* subroot) {
 }
 
 
-Node* BST::successor(int targetKey) {
+Node* BST::treeSuccessor(int targetKey) {
   Node* node = iterativeTreeSearch(root, targetKey);
   if (node == nullptr) {
     return nullptr;
@@ -146,7 +140,7 @@ Node* BST::successor(int targetKey) {
 }
 
 
-Node* BST::predecessor(int targetKey) {
+Node* BST::treePredecessor(int targetKey) {
   Node* node = iterativeTreeSearch(root, targetKey);
   if (node == nullptr) {
     return nullptr;
@@ -204,7 +198,7 @@ int main() {
   // Example BST in Cormen, chap 12.1, page 313
   n1->left = n2;
   n1->right = n3;
-  t1.assignRoot(n1);
+  t1.root = n1;
 
   n2->p = n1;
   n2->left = n4;
@@ -241,12 +235,12 @@ int main() {
   // Successor
   int targetKey2 = 2;
   std::cout << "Successor of " << targetKey2 << ": ";
-  std::cout << t1.successor(targetKey2)->key << std::endl;
+  std::cout << t1.treeSuccessor(targetKey2)->key << std::endl;
 
   // Predecessor
   int targetKey3 = 8;
   std::cout << "Predecessor of " << targetKey3 << ": ";
-  std::cout << t1.predecessor(targetKey3)->key << std::endl;
+  std::cout << t1.treePredecessor(targetKey3)->key << std::endl;
 
   // Tree insert
   t1.treeInsert(4);
@@ -257,7 +251,7 @@ int main() {
 
   // Check successor of 2 now
   std::cout << "Successor of " << targetKey2 << ": ";
-  std::cout << t1.successor(targetKey2)->key << std::endl;
+  std::cout << t1.treeSuccessor(targetKey2)->key << std::endl;
   
   
   return 0;
