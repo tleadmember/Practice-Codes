@@ -14,7 +14,7 @@ public:
   Node* p;
 
   Node(int); //constructor
-  ~Node(); //destructor
+  //~Node(); //destructor
 };
 
 
@@ -25,12 +25,13 @@ Node::Node(int newKey = 0) {
   p = nullptr;
 }
 
-
+/*
 Node::~Node() {
   //std::cout << "Node destructor called.\n";
-  delete left;
-  delete right;
+  //delete left;
+  //delete right;
 }
+*/
 
 
 
@@ -42,13 +43,15 @@ public:
   ~BST();
 
   void inorderTreeWalk(Node*);
-  //void destroyRecursive(Node*);
+  void destroyRecursive(Node*);
   Node* iterativeTreeSearch(Node*, int);
   Node* treeMin(Node*);
   Node* treeMax(Node*);
   Node* treeSuccessor(int);
   Node* treePredecessor(int);
   void treeInsert(int);
+  void transplant(Node*, Node*);
+  void treeDelete(int);
 };
 
 
@@ -59,12 +62,12 @@ BST::BST() {
 
 BST::~BST() {
   //std::cout << "BST destructor called.\n";
-  delete root;
+  //delete root;
 
-  //destroyRecursive(root);
+  destroyRecursive(root);
 }
 
-/*
+
 void BST::destroyRecursive(Node* node) {
   if (node) {
     destroyRecursive(node->left);
@@ -72,7 +75,6 @@ void BST::destroyRecursive(Node* node) {
     delete node;
   }
 }
-*/
 
 
 void BST::inorderTreeWalk(Node* node) {
@@ -184,6 +186,51 @@ void BST::treeInsert(int newKey) { // insert at leaf level
 }
 
 
+void BST::transplant(Node* u, Node* v) { //replace subtree rooted at u
+					 //with subtree rooted at v
+  if (u->p == nullptr) { // replacing the root
+    root = v;
+  } else if (u == u->p->left) {
+    u->p->left = v;
+  } else {
+    u->p->right = v;
+  }
+  if (v != nullptr) { // if v is null, not do anything
+    v->p = u->p;
+  }
+}
+
+
+void BST::treeDelete(int deleteKey) {
+  Node* z = iterativeTreeSearch(root, deleteKey);
+  if (z == nullptr) {
+    std::cout << "Cannot find node with key " << deleteKey << " to delete.\n";
+    return;
+  }
+
+  if (z->left == nullptr) { // no left child
+    transplant(z, z->right);
+  } else if (z->right == nullptr) { // only left child, no right
+    transplant(z, z->left);
+  } else { // both left child and right child
+    Node* y = treeMin(z->right); // find successor knowing z has a
+				 // right child
+    if (y != z->right) {
+      transplant(y, y->right);
+      y->right = z->right;
+      y->right->p = y;
+    }
+    transplant(z, y);
+    y->left = z->left;
+    y->left->p = y;
+    
+  }
+
+  std::cout << "Deleted node with key " << deleteKey << std::endl;
+  delete z; // deallocate memory of node to delete
+}
+
+
 
 int main() {
   BST t1;
@@ -252,6 +299,18 @@ int main() {
   // Check successor of 2 now
   std::cout << "Successor of " << targetKey2 << ": ";
   std::cout << t1.treeSuccessor(targetKey2)->key << std::endl;
+
+  // Delete node
+  t1.treeDelete(7);
+
+  // Print BST in order, again
+  t1.inorderTreeWalk(t1.root);
+  std::cout << std::endl;
+
+  // Predecessor
+  int targetKey4 = 8;
+  std::cout << "Predecessor of " << targetKey4 << ": ";
+  std::cout << t1.treePredecessor(targetKey4)->key << std::endl;
   
   
   return 0;
