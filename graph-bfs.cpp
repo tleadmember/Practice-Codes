@@ -11,6 +11,9 @@ public:
   int key;     // fields
   Node* prev;
   Node* next;
+  int d; // distance from source vertex
+  Node* pi; // predecessor
+  char color;
 
   Node(int); // constructor
   //~Node(); // destructor
@@ -21,6 +24,9 @@ Node::Node(int newKey = 0) { //constructor
   key = newKey;
   prev = nullptr;
   next = nullptr;
+  d = 0;
+  pi = nullptr;
+  color = 'W';
 }
 
 
@@ -129,21 +135,50 @@ void Queue::print() {
 }
 
 
-
-class Graph {
-private:
-  Node* sourceVertex;
-public:
+void BFS(Queue* G, Node* s) {
+  // Breadth-first search. G is graph. s is source vertex
   
-};
+}
 
 
 
 int main() {
-  // Build a graph Queue q1;
-
+  // Create a graph from example in Figure 20.1a on page 550, Cormen
+  // 4th edition
+  int numVertices = 5;
+  Queue* G1 = new Queue[numVertices]; // array of 5 queues (5 adjacency lists)
   
+  // Adj list for vertex 1
+  G1[0].enqueue(2);
+  G1[0].enqueue(5);
+  // Adj list for vertex 2
+  G1[1].enqueue(1);
+  G1[1].enqueue(5);
+  G1[1].enqueue(3);
+  G1[1].enqueue(4);
+  // Adj list for vertex 3
+  G1[2].enqueue(2);
+  G1[2].enqueue(4);
+  // Adj list for vertex 4
+  G1[3].enqueue(2);
+  G1[3].enqueue(5);
+  G1[3].enqueue(3);
+  // Adj list for vertex 5
+  G1[4].enqueue(4);
+  G1[4].enqueue(1);
+  G1[4].enqueue(2);
 
+  // Print graph (adj list representation)
+  for (int i = 0; i < numVertices; ++i) {
+    std::cout << "Vertex " << i+1 << " ---> ";
+    G1[i].print();
+  }
+
+  // Call BFS
+  //BFS(G1, G1[2]);
+  
+  
+  
 
   return 0;
 }
