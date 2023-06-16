@@ -6,6 +6,90 @@ Graph Using Adjacency List, and Breadth-First Search
 #include <iostream>
 
 
+// A graph has a set of vertices and a set of edges
+
+
+class Vertex {
+public:
+  int key;
+
+  Vertex(int);
+  //~Vertex();
+};
+
+
+Vertex::Vertex(int newkey) {
+  key = newKey;
+}
+
+
+
+class Edge {
+public:
+  Vertex* v1, * v2;
+  
+  Edge(Vertex*, Vertex*);
+  //~Edge();
+};
+
+
+Edge::Edge(Vertex* va, Vertex* vb) {
+  v1 = va;
+  v2 = vb;
+}
+
+
+class VertexList {
+public:
+  Vertex* data;
+  VertexList* next;
+};
+
+
+class EdgeList {
+public:
+  Edge* data;
+  EdgeList* next;
+};
+
+
+class Graph {
+public:
+  VertexList* V;
+  EdgeList* E;
+
+  Graph();
+  ~Graph();
+
+  void addVertices(Vertex*);
+  void addEdges(Edge*);
+  void graphPrint();
+};
+
+
+Graph::Graph() {
+  V = nullptr;
+  E = nullptr;
+}
+
+
+Graph::~Graph() {
+  
+}
+
+
+void addVertices(Vertex* newVertex) {
+  VertexList* tempv = new VertexList;
+  tempv->data = newVertex;
+  tempv->next = V;
+  V = tempv;
+}
+
+
+void addEdges(
+
+
+
 class Node {
 public:
   int key;     // fields
@@ -135,8 +219,26 @@ void Queue::print() {
 }
 
 
-void BFS(Queue* G, Node* s) {
-  // Breadth-first search. G is graph. s is source vertex
+class Graph {
+public:
+  Graph();
+  ~Graph();
+};
+
+
+Graph::Graph() {
+  
+}
+
+
+void BFS(Queue* G, Node* s) { // Breadth-first search. G is graph. s
+			      // is source vertex
+  // Initialization of all vertices except the source vertex
+  // (already done in Node constructor)
+
+  s.color = 'G';
+  
+  
   
 }
 
@@ -174,8 +276,9 @@ int main() {
     G1[i].print();
   }
 
-  // Call BFS
-  //BFS(G1, G1[2]);
+  // Call BFS, with source vertex being vertex key 3
+  Node* sourceVertex = new Node(3);
+  BFS(G1, sourceVertex);
   
   
   

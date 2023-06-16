@@ -15,6 +15,14 @@ public:
 
   Node(int); //constructor
   //~Node(); //destructor
+
+  Node* treeMin() {
+    if (left == nullptr) {
+      return this;
+    } else {
+      return left->treeMin();
+    }
+  }
 };
 
 
@@ -104,10 +112,7 @@ Node* BST::treeMin(Node* subroot) {
   if (temp == nullptr) { // empty subtree input
     return nullptr;
   }
-  while (temp->left != nullptr) {
-    temp = temp->left;
-  }
-  return temp;
+  return temp->treeMin();
 }
 
 
