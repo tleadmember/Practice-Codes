@@ -86,10 +86,11 @@ void addVertices(Vertex* newVertex) {
 }
 
 
-void addEdges(
+void addEdges(Edge* newEdge) {
 
+}
 
-
+/*
 class Node {
 public:
   int key;     // fields
@@ -242,9 +243,12 @@ void BFS(Queue* G, Node* s) { // Breadth-first search. G is graph. s
   
 }
 
+*/
+
 
 
 int main() {
+  /*
   // Create a graph from example in Figure 20.1a on page 550, Cormen
   // 4th edition
   int numVertices = 5;
@@ -280,7 +284,7 @@ int main() {
   Node* sourceVertex = new Node(3);
   BFS(G1, sourceVertex);
   
-  
+  */
   
 
   return 0;
