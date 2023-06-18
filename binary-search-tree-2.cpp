@@ -109,20 +109,21 @@ Node* BST::treeMin(Node* subroot) {
   if (subroot == nullptr) { // empty subtree input
     return nullptr;
   } else {
-    return subroot->treeMin();
+    return subroot->treeMin(); // function defined in the Node class
   }
 }
 
 
 Node* BST::treeMax(Node* subroot) {
-  Node* temp = subroot;
-  if (temp == nullptr) { // empty subtree input
+  if (subroot == nullptr) { // empty subtree input
     return nullptr;
+  } else {
+    if (subroot->right == nullptr) { // base case
+      return subroot;
+    } else {                         // recursive case
+      return treeMax(subroot->right);
+    }
   }
-  while (temp->right != nullptr) {
-    temp = temp->right;
-  }
-  return temp;
 }
 
 
