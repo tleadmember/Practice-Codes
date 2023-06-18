@@ -52,7 +52,7 @@ public:
 
   void inorderTreeWalk(Node*);
   void destroyRecursive(Node*);
-  Node* iterativeTreeSearch(Node*, int);
+  Node* recursiveTreeSearch(Node*, int);
   Node* treeMin(Node*);
   Node* treeMax(Node*);
   Node* treeSuccessor(int);
@@ -94,25 +94,23 @@ void BST::inorderTreeWalk(Node* node) {
 }
 
 
-Node* BST::iterativeTreeSearch(Node* subroot, int searchKey) {
-  Node* temp = subroot;
-  while (temp != nullptr && temp->key != searchKey) {
-    if (temp->key > searchKey) {
-      temp = temp->left;
-    } else {
-      temp = temp->right;
-    }
+Node* BST::recursiveTreeSearch(Node* subroot, int searchKey) {
+  if (subroot == nullptr || subroot->key == searchKey) { // base case
+    return subroot;
+  } else if (searchKey < subroot->key) {
+    return recursiveTreeSearch(subroot->left, searchKey);
+  } else {
+    return recursiveTreeSearch(subroot->right, searchKey);
   }
-  return temp;
 }
 
 
 Node* BST::treeMin(Node* subroot) {
-  Node* temp = subroot;
-  if (temp == nullptr) { // empty subtree input
+  if (subroot == nullptr) { // empty subtree input
     return nullptr;
+  } else {
+    return subroot->treeMin();
   }
-  return temp->treeMin();
 }
 
 
@@ -129,7 +127,7 @@ Node* BST::treeMax(Node* subroot) {
 
 
 Node* BST::treeSuccessor(int targetKey) {
-  Node* node = iterativeTreeSearch(root, targetKey);
+  Node* node = recursiveTreeSearch(root, targetKey);
   if (node == nullptr) {
     return nullptr;
   }
@@ -148,7 +146,7 @@ Node* BST::treeSuccessor(int targetKey) {
 
 
 Node* BST::treePredecessor(int targetKey) {
-  Node* node = iterativeTreeSearch(root, targetKey);
+  Node* node = recursiveTreeSearch(root, targetKey);
   if (node == nullptr) {
     return nullptr;
   }
@@ -207,7 +205,7 @@ void BST::transplant(Node* u, Node* v) { //replace subtree rooted at u
 
 
 void BST::treeDelete(int deleteKey) {
-  Node* z = iterativeTreeSearch(root, deleteKey);
+  Node* z = recursiveTreeSearch(root, deleteKey);
   if (z == nullptr) {
     std::cout << "Cannot find node with key " << deleteKey << " to delete.\n";
     return;
@@ -271,7 +269,7 @@ int main() {
 
   // Search
   int targetKey1 = 9;
-  Node* returnNode = t1.iterativeTreeSearch(t1.root, targetKey1);
+  Node* returnNode = t1.recursiveTreeSearch(t1.root, targetKey1);
   if (returnNode == nullptr) {
     std::cout << "Key " << targetKey1 << " not found.\n";
   } else {
