@@ -70,8 +70,8 @@ public:
   Graph();
   ~Graph();
 
-  void addVertices(Vertex*);
-  void addEdges(Edge*);
+  void addVertices(int);
+  void addEdges(Vertex*, Vertex*);
   void graphPrint();
 };
 
@@ -98,7 +98,8 @@ Graph::~Graph() {
 }
 
 
-void Graph::addVertices(Vertex* newVertex) {
+void Graph::addVertices(int newKey) {
+  Vertex* newVertex = new Vertex(newKey);
   VertexList* tempV = new VertexList;
   tempV->data = newVertex;
   tempV->next = V;
@@ -106,16 +107,18 @@ void Graph::addVertices(Vertex* newVertex) {
 }
 
 
-void Graph::addEdges(Edge* newEdge) {
+void Graph::addEdges(Vertex* va, Vertex* vb) {
+  Edge* newEdge = new Edge(va, vb);
   EdgeList* tempE = new EdgeList;
   tempE->data = newEdge;
   tempE->next = E;
   E = tempE;
+  // Add to va and vb adj lists (undirected graph)
 }
 
 
 void Graph::graphPrint() {
-
+  // TO BE ADDED
 }
 
 
@@ -127,6 +130,7 @@ int main() {
   
   return 0;
 }
+
 
 
 
