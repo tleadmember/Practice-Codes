@@ -10,47 +10,56 @@ Graph Using Adjacency List, and Breadth-First Search
 
 
 class Vertex {
-public:
+private:
   int key;
-
-  Vertex(int);
+public:
+  Vertex(int newKey) {
+    key = newKey;
+  }
   //~Vertex();
 };
 
 
-Vertex::Vertex(int newkey) {
-  key = newKey;
-}
-
-
 
 class Edge {
-public:
+private:
   Vertex* v1, * v2;
-  
-  Edge(Vertex*, Vertex*);
+public:
+  Edge(Vertex* va, Vertex* vb) {
+    v1 = va;
+    v2 = vb;
+  }
   //~Edge();
 };
 
-
-Edge::Edge(Vertex* va, Vertex* vb) {
-  v1 = va;
-  v2 = vb;
-}
 
 
 class VertexList {
 public:
   Vertex* data;
   VertexList* next;
+
+  VertexList() {
+    data = nullptr;
+    next = nullptr;
+  }
+  //~VertexList();
 };
+
 
 
 class EdgeList {
 public:
   Edge* data;
   EdgeList* next;
+
+  EdgeList() {
+    data = nullptr;
+    next = nullptr;
+  }
+  //~EdgeList();
 };
+
 
 
 class Graph {
@@ -74,21 +83,49 @@ Graph::Graph() {
 
 
 Graph::~Graph() {
+  VertexList* tempV = nullptr;
+  while (V != nullptr) {
+    tempV = V->next;
+    delete V;
+    V = tempV;
+  }
+  EdgeList* tempE = nullptr;
+  while (E != nullptr) {
+    tempE = E->next;
+    delete E;
+    E = tempE;
+  }
+}
+
+
+void Graph::addVertices(Vertex* newVertex) {
+  VertexList* tempV = new VertexList;
+  tempV->data = newVertex;
+  tempV->next = V;
+  V = tempV;
+}
+
+
+void Graph::addEdges(Edge* newEdge) {
+  EdgeList* tempE = new EdgeList;
+  tempE->data = newEdge;
+  tempE->next = E;
+  E = tempE;
+}
+
+
+
+int main() {
+  // TO BE ADDED
   
+  return 0;
 }
 
 
-void addVertices(Vertex* newVertex) {
-  VertexList* tempv = new VertexList;
-  tempv->data = newVertex;
-  tempv->next = V;
-  V = tempv;
-}
 
 
-void addEdges(Edge* newEdge) {
 
-}
+
 
 /*
 class Node {
@@ -246,9 +283,8 @@ void BFS(Queue* G, Node* s) { // Breadth-first search. G is graph. s
 */
 
 
-
+/*
 int main() {
-  /*
   // Create a graph from example in Figure 20.1a on page 550, Cormen
   // 4th edition
   int numVertices = 5;
@@ -283,9 +319,7 @@ int main() {
   // Call BFS, with source vertex being vertex key 3
   Node* sourceVertex = new Node(3);
   BFS(G1, sourceVertex);
-  
-  */
-  
 
   return 0;
 }
+*/
