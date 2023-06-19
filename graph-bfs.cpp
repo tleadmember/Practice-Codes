@@ -114,9 +114,16 @@ void Graph::addEdges(Edge* newEdge) {
 }
 
 
+void Graph::graphPrint() {
+
+}
+
+
 
 int main() {
-  // TO BE ADDED
+  // ADD SOME VERTICES AND EDGES TO BUILD AN EXAMPLE GRAPH FIRST
+  // BEFORE DOING BFS
+  
   
   return 0;
 }
