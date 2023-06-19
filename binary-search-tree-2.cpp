@@ -13,9 +13,15 @@ public:
   Node* right;
   Node* p;
 
-  Node(int); //constructor
+  Node(int newKey = 0) { //constructor
+    key = newKey;
+    left = nullptr;
+    right = nullptr;
+    p = nullptr;
+  }
+  
   //~Node(); //destructor
-
+  
   Node* treeMin() {
     if (left == nullptr) {
       return this;
@@ -23,15 +29,45 @@ public:
       return left->treeMin();
     }
   }
+
+  Node* treeSuccessor() {
+    if (p == nullptr || p->left == this) {
+      return p;
+    } else {
+      return p->treeSuccessor();
+    }
+  }
+
+  Node* treePredecessor() {
+    if (p == nullptr || p->right == this) {
+      return p;
+    } else {
+      return p->treePredecessor();
+    }
+  }
+
+  Node* treeInsert(Node* newNode) {
+    if (this == nullptr) {
+      return nullptr;
+    } else {
+      if (newNode->key < key) { // need to go left
+	if (left == nullptr) {  // base case 1
+	  return this;
+	} else {
+	  return left->treeInsert(newNode);
+	}
+      } else {                  // need to go right
+	if (right == nullptr) { // base case 2
+	  return this;
+	} else {
+	  return right->treeInsert(newNode);
+	}
+      }
+    }
+  }
+  
 };
 
-
-Node::Node(int newKey = 0) {
-  key = newKey;
-  left = nullptr;
-  right = nullptr;
-  p = nullptr;
-}
 
 /*
 Node::~Node() {
@@ -120,7 +156,7 @@ Node* BST::treeMax(Node* subroot) {
   } else {
     if (subroot->right == nullptr) { // base case
       return subroot;
-    } else {                         // recursive case
+    } else {                       
       return treeMax(subroot->right);
     }
   }
@@ -135,13 +171,7 @@ Node* BST::treeSuccessor(int targetKey) {
   if (node->right != nullptr) { // if node has a right child
     return treeMin(node->right);
   } else { // if node has no right child
-    Node* tempCh = node;
-    Node* tempPa = node->p;
-    while (tempPa != nullptr && tempPa->left != tempCh) {
-      tempCh = tempPa;
-      tempPa = tempPa->p;
-    }
-    return tempPa;
+    return node->treeSuccessor(); // function defined in the Node class
   }
 }
 
@@ -154,21 +184,15 @@ Node* BST::treePredecessor(int targetKey) {
   if (node->left != nullptr) {
     return treeMax(node->left);
   } else {
-    Node* tempCh = node;
-    Node* tempPa = node->p;
-    while (tempPa != nullptr && tempPa->right != tempCh) {
-      tempCh = tempPa;
-      tempPa = tempPa->p;
-    }
-    return tempPa;
+    return node->treePredecessor(); // function defined in the Node class
   }
 }
 
 
 void BST::treeInsert(int newKey) { // insert at leaf level
   Node* newNode = new Node(newKey);
-  Node* temp1 = root;
-  Node* temp2 = nullptr;
+  Node* temp = root->treeInsert(newNode);
+  /*
   while (temp1 != nullptr) { // iterate down to leaf level
     temp2 = temp1;
     if (newNode->key < temp1->key) {
@@ -177,13 +201,14 @@ void BST::treeInsert(int newKey) { // insert at leaf level
       temp1 = temp1->right;
     }
   }
-  newNode->p = temp2;
-  if (temp2 == nullptr) { // empty tree
+  */
+  newNode->p = temp;
+  if (temp == nullptr) { // empty tree
     root = newNode;
-  } else if (newNode->key < temp2->key) {
-    temp2->left = newNode;
+  } else if (newNode->key < temp->key) {
+    temp->left = newNode;
   } else {
-    temp2->right = newNode;
+    temp->right = newNode;
   }
 
   std::cout << "Inserted node with key " << newKey << std::endl;
