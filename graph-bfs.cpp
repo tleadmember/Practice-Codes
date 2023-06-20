@@ -10,9 +10,8 @@ Graph Using Adjacency List, and Breadth-First Search
 
 
 class Vertex {
-private:
-  int key;
 public:
+  int key;
   Vertex(int newKey) {
     key = newKey;
   }
@@ -82,24 +81,38 @@ Graph::Graph() {
   E = nullptr;
   Adj = new VertexList*[5]; // adjacency lists for vertices,
 			    // predetermined number of vertices,
-			    // index = key-1 (example from Figure
+			    // index = data-1 (example from Figure
 			    // 20.1a, page 550, chapter 20, Cormen)
 }
 
 
 Graph::~Graph() {
-  VertexList* tempV = nullptr;
+  VertexList* tempV;
   while (V != nullptr) {
     tempV = V->next;
+    delete V->data; // deallocate Vertex* memories
     delete V;
     V = tempV;
   }
-  EdgeList* tempE = nullptr;
+  
+  EdgeList* tempE;
   while (E != nullptr) {
     tempE = E->next;
+    delete E->data; // deallocate Edge* memories
     delete E;
     E = tempE;
   }
+
+  for (int i = 0; i < 5; ++i) {
+    VertexList* tempV;
+    while (Adj[i] != nullptr) {
+      tempV = Adj[i]->next;
+      delete Adj[i]; // no need to delete data field because pointing
+		     // to the same Vertices deleted in V elements above
+      Adj[i] = tempV;
+    }
+  }
+  delete Adj;
 }
 
 
@@ -118,6 +131,11 @@ void Graph::addEdges(Vertex* va, Vertex* vb) {
   tempE->next = E;
   E = tempE;
   // Add to va and vb adj lists (undirected graph)
+  VertexList* tempV = new VertexList;
+  tempV->data = va;
+  tempV->next = Adj[va->key -1];
+  Adj[va->key - 1] = tempV;
+  // same for vb
 }
 
 
