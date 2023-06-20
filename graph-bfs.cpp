@@ -66,11 +66,12 @@ class Graph {
 public:
   VertexList* V;
   EdgeList* E;
+  VertexList** Adj; // adjacency lists for vertices
 
   Graph();
   ~Graph();
 
-  void addVertices(int);
+  void addVertices(Vertex*);
   void addEdges(Vertex*, Vertex*);
   void graphPrint();
 };
@@ -79,6 +80,10 @@ public:
 Graph::Graph() {
   V = nullptr;
   E = nullptr;
+  Adj = new VertexList*[5]; // adjacency lists for vertices,
+			    // predetermined number of vertices,
+			    // index = key-1 (example from Figure
+			    // 20.1a, page 550, chapter 20, Cormen)
 }
 
 
@@ -98,8 +103,7 @@ Graph::~Graph() {
 }
 
 
-void Graph::addVertices(int newKey) {
-  Vertex* newVertex = new Vertex(newKey);
+void Graph::addVertices(Vertex* newVertex) {
   VertexList* tempV = new VertexList;
   tempV->data = newVertex;
   tempV->next = V;
