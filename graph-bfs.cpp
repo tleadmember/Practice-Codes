@@ -43,6 +43,8 @@ public:
     next = nullptr;
   }
   //~VertexList();
+  // delete data
+  // delete next
 };
 
 
@@ -57,6 +59,8 @@ public:
     next = nullptr;
   }
   //~EdgeList();
+  // delete data
+  // delete next
 };
 
 
@@ -65,7 +69,6 @@ class Graph {
 public:
   VertexList* V;
   EdgeList* E;
-  VertexList** Adj; // adjacency lists for vertices
 
   Graph();
   ~Graph();
@@ -79,10 +82,6 @@ public:
 Graph::Graph() {
   V = nullptr;
   E = nullptr;
-  Adj = new VertexList*[5]; // adjacency lists for vertices,
-			    // predetermined number of vertices,
-			    // index = data-1 (example from Figure
-			    // 20.1a, page 550, chapter 20, Cormen)
 }
 
 
@@ -102,17 +101,6 @@ Graph::~Graph() {
     delete E;
     E = tempE;
   }
-
-  for (int i = 0; i < 5; ++i) {
-    VertexList* tempV;
-    while (Adj[i] != nullptr) {
-      tempV = Adj[i]->next;
-      delete Adj[i]; // no need to delete data field because pointing
-		     // to the same Vertices deleted in V elements above
-      Adj[i] = tempV;
-    }
-  }
-  delete Adj;
 }
 
 
@@ -130,12 +118,6 @@ void Graph::addEdges(Vertex* va, Vertex* vb) {
   tempE->data = newEdge;
   tempE->next = E;
   E = tempE;
-  // Add to va and vb adj lists (undirected graph)
-  VertexList* tempV = new VertexList;
-  tempV->data = va;
-  tempV->next = Adj[va->key -1];
-  Adj[va->key - 1] = tempV;
-  // same for vb
 }
 
 

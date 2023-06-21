@@ -19,6 +19,14 @@ public:
     right = nullptr;
     p = nullptr;
   }
+
+  Node(int newKey, Node* parent, Node** ptr) {
+    key = newKey;
+    p = parent;
+    *ptr = this;
+    left = nullptr;
+    right = nullptr;
+  }
   
   //~Node(); //destructor
   
@@ -46,6 +54,7 @@ public:
     }
   }
 
+  /*
   Node* treeInsert(Node* newNode) {
     if (this == nullptr) {
       return nullptr;
@@ -64,6 +73,26 @@ public:
 	}
       }
     }
+  }
+  */
+
+  void treeInsert(int newKey) { // same name ok with different type
+    if (newKey < key) {
+      if (left == nullptr) {
+	Node* newNode = new Node(newKey, this, &left); // & is like
+						       // having a new
+						       // pointer to
+						       // that address
+      } else {
+	left->treeInsert(newKey);
+      }
+    } else if (newKey > key) {
+      if (right == nullptr) {
+	Node* newNode = new Node(newKey, this, &right);
+      } else {
+	right->treeInsert(newKey);
+      }
+    } 
   }
   
 };
@@ -188,11 +217,11 @@ Node* BST::treePredecessor(int targetKey) {
   }
 }
 
-
+/*
 void BST::treeInsert(int newKey) { // insert at leaf level
   Node* newNode = new Node(newKey);
   Node* temp = root->treeInsert(newNode);
-  /*
+  
   while (temp1 != nullptr) { // iterate down to leaf level
     temp2 = temp1;
     if (newNode->key < temp1->key) {
@@ -201,7 +230,7 @@ void BST::treeInsert(int newKey) { // insert at leaf level
       temp1 = temp1->right;
     }
   }
-  */
+  
   newNode->p = temp;
   if (temp == nullptr) { // empty tree
     root = newNode;
@@ -212,6 +241,16 @@ void BST::treeInsert(int newKey) { // insert at leaf level
   }
 
   std::cout << "Inserted node with key " << newKey << std::endl;
+}
+*/
+
+
+void BST::treeInsert(int newKey) {
+  if (root != nullptr) {
+    root->treeInsert(newKey);
+  } else {
+    root = new Node(newKey);
+  }
 }
 
 
