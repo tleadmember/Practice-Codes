@@ -1,5 +1,5 @@
 /*
-TQBH - 2023-06-15,18
+TQBH - 2023-06-15,18,21
 Graph Using Adjacency List, and Breadth-First Search
 */
 
@@ -45,6 +45,7 @@ public:
   //~VertexList();
   // delete data
   // delete next
+  // delete this
 };
 
 
@@ -61,6 +62,7 @@ public:
   //~EdgeList();
   // delete data
   // delete next
+  // delete this
 };
 
 
@@ -128,8 +130,7 @@ void Graph::graphPrint() {
 
 
 int main() {
-  // ADD SOME VERTICES AND EDGES TO BUILD AN EXAMPLE GRAPH FIRST
-  // BEFORE DOING BFS
+  // Create a graph like example 
   
   
   return 0;
