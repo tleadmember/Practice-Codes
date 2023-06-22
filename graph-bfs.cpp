@@ -12,6 +12,7 @@ Graph Using Adjacency List, and Breadth-First Search
 class Vertex {
 public:
   int key;
+  
   Vertex(int newKey) {
     key = newKey;
   }
@@ -21,9 +22,9 @@ public:
 
 
 class Edge {
-private:
-  Vertex* v1, * v2;
 public:
+  Vertex* v1, * v2;
+  
   Edge(Vertex* va, Vertex* vb) {
     v1 = va;
     v2 = vb;
@@ -46,6 +47,7 @@ public:
   // delete data
   // delete next
   // delete this
+  
 };
 
 
@@ -124,14 +126,58 @@ void Graph::addEdges(Vertex* va, Vertex* vb) {
 
 
 void Graph::graphPrint() {
-  // TO BE ADDED
+  VertexList* tempV = V; // point to beginning of list
+  
+  while (tempV != nullptr) { 
+    EdgeList* tempE = E; // point to beginning of list for each tempV
+			 // iteration
+    
+    std::cout << "Vertex: " << tempV->data->key << " - ";
+    std::cout << "Edges: ";
+    
+    while (tempE != nullptr) {
+      if (tempE->data->v1 == tempV->data || tempE->data->v2 == tempV->data) {
+	std::cout << tempE->data->v1->key << "-" << tempE->data->v2->key;
+	std::cout << ", ";
+      }
+      tempE = tempE->next;
+    }
+    
+    std::cout << std::endl;
+    tempV = tempV->next;
+    
+  }
+
+  std::cout << std::endl;
 }
 
 
 
 int main() {
-  // Create a graph like example 
+  // Create a graph like example in Figure 20.1a, p550, Cormen 4th ed
+  Graph g; // for this practice, g is an undirected graph
   
+  Vertex* vertex1 = new Vertex(1);
+  g.addVertices(vertex1);
+  Vertex* vertex2 = new Vertex(2);
+  g.addVertices(vertex2);
+  Vertex* vertex3 = new Vertex(3);
+  g.addVertices(vertex3);
+  Vertex* vertex4 = new Vertex(4);
+  g.addVertices(vertex4);
+  Vertex* vertex5 = new Vertex(5);
+  g.addVertices(vertex5);
+  
+  g.addEdges(vertex1, vertex5); // undirected, order of vertices not matter
+  g.addEdges(vertex1, vertex2);
+  g.addEdges(vertex2, vertex5);
+  g.addEdges(vertex2, vertex4);
+  g.addEdges(vertex4, vertex5);
+  g.addEdges(vertex3, vertex2);
+  g.addEdges(vertex3, vertex4);
+
+  // Print
+  g.graphPrint();
   
   return 0;
 }
