@@ -1,6 +1,6 @@
 /*
-TQBH - 2023-06-15,18,21
-Graph Using Adjacency List, and Breadth-First Search
+TQBH - 2023-06-15,18,21,23
+Graph and Breadth-First Search
 */
 
 #include <iostream>
@@ -43,11 +43,9 @@ public:
     data = nullptr;
     next = nullptr;
   }
-  //~VertexList();
-  // delete data
-  // delete next
-  // delete this
-  
+  ~VertexList() {
+    delete data;
+  }  
 };
 
 
@@ -61,10 +59,47 @@ public:
     data = nullptr;
     next = nullptr;
   }
-  //~EdgeList();
-  // delete data
-  // delete next
-  // delete this
+  ~EdgeList() {
+    delete data;
+  }
+};
+
+
+
+class Queue {
+public:
+  VertexList* head;
+  VertexList* tail;
+
+  Queue() {
+    head = nullptr;
+    tail = nullptr;
+  }
+  
+  ~Queue() {
+    while (head != nullptr) {
+      VertexList* tempV = head->next;
+      delete head;
+      head = tempV;
+    }
+  }
+
+  void enqueue(Vertex* v) { // add to end of queue
+    VertexList* tempV = new VertexList;
+    tempV->data = v;
+    if (head == nullptr) { // empty queue
+      head = tempV;
+      tail = tempV;
+    } else if (head == tail) { // only one existing element
+
+    } else { // more than one existing element
+
+    }
+  }
+
+  Vertex* dequeue() {
+    //
+  }
 };
 
 
@@ -80,6 +115,7 @@ public:
   void addVertices(Vertex*);
   void addEdges(Vertex*, Vertex*);
   void graphPrint();
+  Vertex* BFS(Vertex*, int);
 };
 
 
@@ -90,18 +126,16 @@ Graph::Graph() {
 
 
 Graph::~Graph() {
-  VertexList* tempV;
   while (V != nullptr) {
-    tempV = V->next;
-    delete V->data; // deallocate Vertex* memories
+    VertexList* tempV = V->next;
+    //delete V->data; // handled in ~Vertex()
     delete V;
     V = tempV;
   }
   
-  EdgeList* tempE;
   while (E != nullptr) {
-    tempE = E->next;
-    delete E->data; // deallocate Edge* memories
+    EdgeList* tempE = E->next;
+    //delete E->data; // handled in ~Edge()
     delete E;
     E = tempE;
   }
@@ -149,6 +183,22 @@ void Graph::graphPrint() {
   }
 
   std::cout << std::endl;
+}
+
+
+Vertex* Graph::BST(Vertex* x, int key) {
+  // Create new frontier queue Q
+
+  // Create new set V2 (all nodes ever added to frontier queue Q)
+
+  // Insert x into Q
+
+  // Insert x into V2
+
+  // While loop
+
+  // Otherwise, return that key is not found
+  
 }
 
 
