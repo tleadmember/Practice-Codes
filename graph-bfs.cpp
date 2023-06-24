@@ -20,7 +20,6 @@ public:
 };
 
 
-
 class Edge {
 public:
   Vertex* v1, * v2;
@@ -33,7 +32,6 @@ public:
 };
 
 
-
 class VertexList {
 public:
   Vertex* data;
@@ -44,10 +42,9 @@ public:
     next = nullptr;
   }
   ~VertexList() {
-    delete data;
+    //delete data;
   }  
 };
-
 
 
 class EdgeList {
@@ -60,10 +57,9 @@ public:
     next = nullptr;
   }
   ~EdgeList() {
-    delete data;
+    //delete data;
   }
 };
-
 
 
 class Queue {
@@ -79,6 +75,7 @@ public:
   ~Queue() {
     while (head != nullptr) {
       VertexList* tempV = head->next;
+      delete head->data;
       delete head;
       head = tempV;
     }
@@ -90,15 +87,30 @@ public:
     if (head == nullptr) { // empty queue
       head = tempV;
       tail = tempV;
-    } else if (head == tail) { // only one existing element
-
-    } else { // more than one existing element
-
+    } else { // one or more existing elements
+      tail->next = tempV;
+      tail = tempV;
     }
   }
 
   Vertex* dequeue() {
-    //
+    if (head == nullptr) { // empty queue
+      std::cout << "Queue underflows.\n";
+      return nullptr;
+    } else if (head == tail) { // only one existing element
+      VertexList* tempV = head;
+      Vertex* tempv = head->data;
+      head = nullptr;
+      tail = nullptr;
+      delete tempV;
+      return tempv;
+    } else { // more than one existing element
+      VertexList* tempV = head;
+      Vertex* tempv = head->data;
+      head = head->next;
+      delete tempV;
+      return tempv;
+    }
   }
 };
 
@@ -128,14 +140,14 @@ Graph::Graph() {
 Graph::~Graph() {
   while (V != nullptr) {
     VertexList* tempV = V->next;
-    //delete V->data; // handled in ~Vertex()
+    delete V->data; 
     delete V;
     V = tempV;
   }
   
   while (E != nullptr) {
     EdgeList* tempE = E->next;
-    //delete E->data; // handled in ~Edge()
+    delete E->data;
     delete E;
     E = tempE;
   }
@@ -161,14 +173,11 @@ void Graph::addEdges(Vertex* va, Vertex* vb) {
 
 void Graph::graphPrint() {
   VertexList* tempV = V; // point to beginning of list
-  
   while (tempV != nullptr) { 
     EdgeList* tempE = E; // point to beginning of list for each tempV
 			 // iteration
-    
     std::cout << "Vertex: " << tempV->data->key << " - ";
     std::cout << "Edges: ";
-    
     while (tempE != nullptr) {
       if (tempE->data->v1 == tempV->data || tempE->data->v2 == tempV->data) {
 	std::cout << tempE->data->v1->key << "-" << tempE->data->v2->key;
@@ -176,12 +185,9 @@ void Graph::graphPrint() {
       }
       tempE = tempE->next;
     }
-    
     std::cout << std::endl;
-    tempV = tempV->next;
-    
+    tempV = tempV->next; 
   }
-
   std::cout << std::endl;
 }
 
@@ -197,7 +203,7 @@ Vertex* Graph::BST(Vertex* x, int key) {
 
   // While loop
 
-  // Otherwise, return that key is not found
+  // Otherwise, return that the key is not found
   
 }
 
