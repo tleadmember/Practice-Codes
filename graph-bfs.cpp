@@ -1,5 +1,5 @@
 /*
-TQBH - 2023-06-15,18,21,23
+TQBH - 2023-06-15,18,21,23,24
 Graph and Breadth-First Search
 */
 
@@ -41,9 +41,10 @@ public:
     data = nullptr;
     next = nullptr;
   }
+  
   ~VertexList() {
     //delete data;
-  }  
+  }
 };
 
 
@@ -56,6 +57,7 @@ public:
     data = nullptr;
     next = nullptr;
   }
+  
   ~EdgeList() {
     //delete data;
   }
@@ -75,7 +77,8 @@ public:
   ~Queue() {
     while (head != nullptr) {
       VertexList* tempV = head->next;
-      delete head->data;
+      //delete head->data; // memory of Vertex* pointers will be
+                           // deallocated in ~Graph()
       delete head;
       head = tempV;
     }
@@ -103,13 +106,52 @@ public:
       head = nullptr;
       tail = nullptr;
       delete tempV;
-      return tempv;
+      return tempv; // memory of Vertex* tempv will be deallocated in
+		    // ~Graph()
     } else { // more than one existing element
       VertexList* tempV = head;
       Vertex* tempv = head->data;
       head = head->next;
       delete tempV;
-      return tempv;
+      return tempv; // memory of Vertex* tempv will be deallocated in
+		    // ~Graph()
+    }
+  }
+};
+
+
+class Set {
+public:
+  VertexList* VV;
+
+  Set() {
+    VV = nullptr;
+  }
+
+  ~Set() {
+    while (VV != nullptr) {
+      VertexList* tempV = VV->next;
+      delete VV;
+      VV = tempV;
+    }
+  }
+  
+  void addVertices(Vertex* v) {
+    VertexList* tempV = new VertexList;
+    tempV->data = v;
+    tempV->next = VV;
+    VV = tempV;
+  }
+
+  bool notContain(Vertex* v) {
+    VertexList* tempV = VV;
+    while (tempV != nullptr && tempV->data != v) {
+      tempV = tempV->next;
+    }
+    if (tempV == nullptr) {
+      return true;
+    } else {
+      return false;
     }
   }
 };
@@ -192,19 +234,37 @@ void Graph::graphPrint() {
 }
 
 
-Vertex* Graph::BST(Vertex* x, int key) {
+Vertex* Graph::BFS(Vertex* x, int key) {
   // Create new frontier queue Q
-
+  Queue Q;
   // Create new set V2 (all nodes ever added to frontier queue Q)
-
+  Set V2;
   // Insert x into Q
-
-  // Insert x into V2
-
+  Q.enqueue(x);
+  // Insert x into V2 (insert at beginning of list is fine)
+  V2.addVertices(x);
   // While loop
-
+  while (Q.head != nullptr) {
+    Vertex* y = Q.dequeue();
+    if (y->key == key) {
+      return y;
+    }
+    // add all neighbors of y not already in V2 to Q and V2
+    EdgeList* tempE = E;
+    while (tempE != nullptr) {
+      if (tempE->data->v1 == y && V2.notContain(tempE->data->v2)) {
+	Q.enqueue(tempE->data->v2);
+	V2.addVertices(tempE->data->v2);
+      } else if (tempE->data->v2 == y && V2.notContain(tempE->data->v1)) {
+	Q.enqueue(tempE->data->v1);
+	V2.addVertices(tempE->data->v1);
+      }
+      tempE = tempE->next;
+    }
+  }
   // Otherwise, return that the key is not found
-  
+  std::cout << "Key " << key << " not found.\n";
+  return nullptr;
 }
 
 
@@ -223,6 +283,10 @@ int main() {
   g.addVertices(vertex4);
   Vertex* vertex5 = new Vertex(5);
   g.addVertices(vertex5);
+  Vertex* vertex6 = new Vertex(6);
+  g.addVertices(vertex6);
+  Vertex* vertex7 = new Vertex(7);
+  g.addVertices(vertex7);
   
   g.addEdges(vertex1, vertex5); // undirected, order of vertices not matter
   g.addEdges(vertex1, vertex2);
@@ -231,213 +295,18 @@ int main() {
   g.addEdges(vertex4, vertex5);
   g.addEdges(vertex3, vertex2);
   g.addEdges(vertex3, vertex4);
+  g.addEdges(vertex6, vertex7); // vertices 6 and 7 form a connected component
 
   // Print
   g.graphPrint();
+
+  // Breadth-First Search (BFS)
+  int searchKey = 7;
+  Vertex* searchResult = g.BFS(vertex1, searchKey);
+  if (searchResult != nullptr) {
+    std::cout << "BFS returns key " << searchResult->key << std::endl;
+  }
+  
   
   return 0;
 }
-
-
-
-
-
-
-
-
-/*
-class Node {
-public:
-  int key;     // fields
-  Node* prev;
-  Node* next;
-  int d; // distance from source vertex
-  Node* pi; // predecessor
-  char color;
-
-  Node(int); // constructor
-  //~Node(); // destructor
-};
-
-
-Node::Node(int newKey = 0) { //constructor
-  key = newKey;
-  prev = nullptr;
-  next = nullptr;
-  d = 0;
-  pi = nullptr;
-  color = 'W';
-}
-
-
-
-class Queue {
-private:
-  int count;
-  Node* head;
-  Node* tail;
-public:
-  Queue(); //constructor
-  ~Queue(); //destructor
-
-  int dequeue();       // other utility functions
-  void enqueue(int);
-  int front();
-  int size();
-  //bool isFull();
-  //bool isEmpty();
-  void print();
-};
-
-
-Queue::Queue() { // queue using linked list, no need to specify length
-  count = 0;
-  head = nullptr;
-  tail = nullptr;
-}
-
-
-Queue::~Queue() {
-  Node* tempNode1 = head, * tempNode2;
-  while (tempNode1 != nullptr) {
-    tempNode2 = tempNode1->next;
-    delete tempNode1;
-    tempNode1 = tempNode2;
-  }
-}
-
-
-int Queue::dequeue() {
-  Node* tempNode = head;
-
-  --count;
-
-  if (head == nullptr) {  // empty queue
-    std::cout << "Error. Queue underflows.\n";
-    return -1;
-  } else {
-    if (head == tail) {  // queue with one node
-      head = nullptr;
-      tail = nullptr;
-    } else { // queue with more than one node
-      tempNode->next->prev = nullptr;
-      head = tempNode->next;
-    }
-  }
-
-  int tempKey = tempNode->key;
-  delete tempNode;
-  return tempKey;
-}
-
-
-void Queue::enqueue(int newKey) {
-  Node* newNode = new Node(newKey);
-
-  ++count;
-
-  if (head == nullptr) {  // empty queue
-    head = newNode;
-    tail = newNode;
-  } else { // queue with at least one node
-    newNode->prev = tail;
-    tail->next = newNode;
-    tail = newNode;    
-  }
-  
-  return;
-}
-
-
-int Queue::front() {
-  if (head == nullptr) {
-    std::cout << "Error. Empty queue. No head.\n";
-    return -1;
-  } else {
-    return head->key;
-  }
-}
-
-
-int Queue::size() {
-  return count;
-}
-
-
-void Queue::print() {
-  Node* tempNode = head;
-  while (tempNode != nullptr) {
-    std::cout << tempNode->key << " -> ";
-    tempNode = tempNode->next;
-  }
-  std::cout << "NULL\n";
-  return;
-}
-
-
-class Graph {
-public:
-  Graph();
-  ~Graph();
-};
-
-
-Graph::Graph() {
-  
-}
-
-
-void BFS(Queue* G, Node* s) { // Breadth-first search. G is graph. s
-			      // is source vertex
-  // Initialization of all vertices except the source vertex
-  // (already done in Node constructor)
-
-  s.color = 'G';
-  
-  
-  
-}
-
-*/
-
-
-/*
-int main() {
-  // Create a graph from example in Figure 20.1a on page 550, Cormen
-  // 4th edition
-  int numVertices = 5;
-  Queue* G1 = new Queue[numVertices]; // array of 5 queues (5 adjacency lists)
-  
-  // Adj list for vertex 1
-  G1[0].enqueue(2);
-  G1[0].enqueue(5);
-  // Adj list for vertex 2
-  G1[1].enqueue(1);
-  G1[1].enqueue(5);
-  G1[1].enqueue(3);
-  G1[1].enqueue(4);
-  // Adj list for vertex 3
-  G1[2].enqueue(2);
-  G1[2].enqueue(4);
-  // Adj list for vertex 4
-  G1[3].enqueue(2);
-  G1[3].enqueue(5);
-  G1[3].enqueue(3);
-  // Adj list for vertex 5
-  G1[4].enqueue(4);
-  G1[4].enqueue(1);
-  G1[4].enqueue(2);
-
-  // Print graph (adj list representation)
-  for (int i = 0; i < numVertices; ++i) {
-    std::cout << "Vertex " << i+1 << " ---> ";
-    G1[i].print();
-  }
-
-  // Call BFS, with source vertex being vertex key 3
-  Node* sourceVertex = new Node(3);
-  BFS(G1, sourceVertex);
-
-  return 0;
-}
-*/
