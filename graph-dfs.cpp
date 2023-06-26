@@ -172,7 +172,7 @@ public:
   void addEdges(Vertex*, Vertex*);
   void graphPrint();
   Vertex* DFS(int);
-  Vertex* DFSVisit(Vertex*, int, Set);
+  Vertex* DFSVisit(Vertex*, int, Set*);
 };
 
 
@@ -239,41 +239,44 @@ void Graph::graphPrint() {
 
 Vertex* Graph::DFS(int key) {
   // Create new vertex set V2
-  Set V2;
+  Set* V2 = new Set;
   // Go through vertex list and visit all vertices not already in V2
   Vertex* resultv;
   VertexList* tempV = V;
   while (tempV != nullptr && resultv->key != key) {
-    if (V2.notContain(V->data)) {
-       resultv = DFSVisit(V->data, key, V2);
+    if (V2->notContain(tempV->data)) {
+       resultv = DFSVisit(tempV->data, key, V2);
     }
     tempV = tempV->next;
   }
   // Return
-  if (tempV == nullptr) {
+  delete V2;
+  if (resultv->key == key) {
+    return resultv;
+  } else {
     std::cout << "Key " << key << " not found.\n";
     return nullptr;
-  } else {
-    return resultv;
-  }
+  }  
 }
 
 
-Vertex* Graph::DFSVisit(Vertex* v, int key, Set V2) {
+Vertex* Graph::DFSVisit(Vertex* v, int key, Set* V2) {
   // Check if found the right vertex key
   if (v->key == key) {
     return v;
   }
   // If not, insert v into V2 (insert at beginning of list is fine)
-  V2.addVertices(v);
+  V2->addVertices(v);
   // Visit each neighbor of this vertex not already in V2
-  Vertex* resultv;
+  Vertex* result;
   EdgeList* tempE = E;
-  while (tempE != nullptr && resultv->key != key) {
-    if (tempE->data->v1 == v && V2.notContain(tempE->data->v2)) {
-      resultv = DFSVisit(tempE->data->v2, key, V2);
-    } else if (tempE->data->v2 == v && V2.notContain(tempE->data->v1)) {
-      resultv = DFSVisit(tempE->data->v1, key, V2);
+  while (tempE != nullptr && result->key != key) {
+    if (tempE->data->v1 == v && V2->notContain(tempE->data->v2)) {
+      //std::cout << tempE->data->v2->key << std::endl;
+      result = DFSVisit(tempE->data->v2, key, V2);
+    } else if (tempE->data->v2 == v && V2->notContain(tempE->data->v1)) {
+      //std::cout << tempE->data->v1->key << std::endl;
+      result = DFSVisit(tempE->data->v1, key, V2);
     }
     tempE = tempE->next;
   }
@@ -285,7 +288,7 @@ Vertex* Graph::DFSVisit(Vertex* v, int key, Set V2) {
     return resultv; // matching
   }
   */
-  return resultv; // either matching or default key (not matching)
+  return result; // either matching or default key (not matching)
 }
 
 
@@ -322,7 +325,7 @@ int main() {
   g.graphPrint();
 
   // Depth-First Search (DFS)
-  int searchKey = 4;
+  int searchKey = 1;
   Vertex* searchResult = g.DFS(searchKey);
   if (searchResult != nullptr) {
     std::cout << "DFS returns key " << searchResult->key << std::endl;
