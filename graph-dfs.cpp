@@ -1,5 +1,5 @@
 /*
-TQBH - 2023-06-25
+TQBH - 2023-06-25,26
 Graph and Depth-First Search
 */
 
@@ -241,7 +241,7 @@ Vertex* Graph::DFS(int key) {
   // Create new vertex set V2
   Set* V2 = new Set;
   // Go through vertex list and visit all vertices not already in V2
-  Vertex* resultv;
+  Vertex* resultv; // BUT WHY DOES THIS DANGLING POINTER NOT CAUSE AN ERROR?
   VertexList* tempV = V;
   while (tempV != nullptr && resultv->key != key) {
     if (V2->notContain(tempV->data)) {
@@ -268,14 +268,13 @@ Vertex* Graph::DFSVisit(Vertex* v, int key, Set* V2) {
   // If not, insert v into V2 (insert at beginning of list is fine)
   V2->addVertices(v);
   // Visit each neighbor of this vertex not already in V2
-  Vertex* result;
+  Vertex* result = v; // point to v memory as dummy Vertex, to avoid
+		      // having to create new memory every time
   EdgeList* tempE = E;
   while (tempE != nullptr && result->key != key) {
     if (tempE->data->v1 == v && V2->notContain(tempE->data->v2)) {
-      //std::cout << tempE->data->v2->key << std::endl;
       result = DFSVisit(tempE->data->v2, key, V2);
     } else if (tempE->data->v2 == v && V2->notContain(tempE->data->v1)) {
-      //std::cout << tempE->data->v1->key << std::endl;
       result = DFSVisit(tempE->data->v1, key, V2);
     }
     tempE = tempE->next;
@@ -325,7 +324,7 @@ int main() {
   g.graphPrint();
 
   // Depth-First Search (DFS)
-  int searchKey = 1;
+  int searchKey = 4;
   Vertex* searchResult = g.DFS(searchKey);
   if (searchResult != nullptr) {
     std::cout << "DFS returns key " << searchResult->key << std::endl;
