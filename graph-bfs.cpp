@@ -301,7 +301,7 @@ int main() {
   g.graphPrint();
 
   // Breadth-First Search (BFS)
-  int searchKey = 7;
+  int searchKey = 4;
   Vertex* searchResult = g.BFS(vertex1, searchKey);
   if (searchResult != nullptr) {
     std::cout << "BFS returns key " << searchResult->key << std::endl;

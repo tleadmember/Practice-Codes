@@ -239,24 +239,22 @@ void Graph::graphPrint() {
 
 Vertex* Graph::DFS(int key) {
   // Create new vertex set V2
-  Set* V2 = new Set;
+  Set V2;
   // Go through vertex list and visit all vertices not already in V2
-  Vertex* resultv; // BUT WHY DOES THIS DANGLING POINTER NOT CAUSE AN ERROR?
+  Vertex* resultv = nullptr;
   VertexList* tempV = V;
-  while (tempV != nullptr && resultv->key != key) {
-    if (V2->notContain(tempV->data)) {
-       resultv = DFSVisit(tempV->data, key, V2);
+  while (tempV != nullptr && resultv == nullptr) {
+    if (V2.notContain(tempV->data)) {
+       resultv = DFSVisit(tempV->data, key, &V2);
     }
     tempV = tempV->next;
   }
   // Return
-  delete V2;
-  if (resultv->key == key) {
-    return resultv;
-  } else {
+  //delete V2; // no longer needed
+  if (resultv == nullptr) {
     std::cout << "Key " << key << " not found.\n";
-    return nullptr;
-  }  
+  }
+  return resultv;
 }
 
 
@@ -268,10 +266,9 @@ Vertex* Graph::DFSVisit(Vertex* v, int key, Set* V2) {
   // If not, insert v into V2 (insert at beginning of list is fine)
   V2->addVertices(v);
   // Visit each neighbor of this vertex not already in V2
-  Vertex* result = v; // point to v memory as dummy Vertex, to avoid
-		      // having to create new memory every time
+  Vertex* result = nullptr; 
   EdgeList* tempE = E;
-  while (tempE != nullptr && result->key != key) {
+  while (tempE != nullptr && result == nullptr) {
     if (tempE->data->v1 == v && V2->notContain(tempE->data->v2)) {
       result = DFSVisit(tempE->data->v2, key, V2);
     } else if (tempE->data->v2 == v && V2->notContain(tempE->data->v1)) {
@@ -280,14 +277,7 @@ Vertex* Graph::DFSVisit(Vertex* v, int key, Set* V2) {
     tempE = tempE->next;
   }
   // Return
-  /*
-  if (tempE == nullptr) {
-    return resultv; // default (key not matching)
-  } else {
-    return resultv; // matching
-  }
-  */
-  return result; // either matching or default key (not matching)
+  return result; 
 }
 
 
