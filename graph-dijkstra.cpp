@@ -6,6 +6,9 @@ Graph and Dijkstra's Algorithm
 #include <iostream>
 
 
+#define INF 2147483640; // define infinity, near the max of int
+
+
 // A graph has a set of vertices and a set of edges
 
 
@@ -13,10 +16,12 @@ class Vertex {
 public:
   int key;
   Vertex* p; // predecessor pointer (in shortest-paths tree)
+  int d;
   
   Vertex(int newKey) {
     key = newKey;
     p = nullptr;
+    d = INF;
   }
   //~Vertex();
 };
@@ -228,8 +233,8 @@ void Graph::graphPrint() {
     std::cout << "Vertex: " << tempV->data->key << " - ";
     std::cout << "Edges: ";
     while (tempE != nullptr) {
-      if (tempE->data->v1 == tempV->data || tempE->data->v2 == tempV->data) {
-	std::cout << tempE->data->v1->key << "-" << tempE->data->v2->key;
+      if (tempE->data->v1 == tempV->data) {
+	std::cout << tempE->data->v1->key << "->" << tempE->data->v2->key;
 	std::cout << ", ";
       }
       tempE = tempE->next;
@@ -277,9 +282,6 @@ Vertex* Graph::BFS(Vertex* x, int key) {
       if (tempE->data->v1 == y && V2.notContain(tempE->data->v2)) {
 	Q.enqueue(tempE->data->v2);
 	V2.addVertices(tempE->data->v2);
-      } else if (tempE->data->v2 == y && V2.notContain(tempE->data->v1)) {
-	Q.enqueue(tempE->data->v1);
-	V2.addVertices(tempE->data->v1);
       }
       tempE = tempE->next;
     }
@@ -292,28 +294,62 @@ Vertex* Graph::BFS(Vertex* x, int key) {
 
 
 void Graph::dijkstra(Vertex* s) { // source vertex s
+  // Initialize-single-source (distance, predecessor)
+
+  // Create empty Q, min priority queue (maybe use STL min heap)
+
+  // Create empty set S (DOES NOT REALLY SERVE A PURPOSE HERE)
+
+  // Add all vertices to Q
+
+  // While Q is not empty (length/size != 0)
+  
+  //   u = vertex with d == Q.min-extract(), head of a min heap
+
+  //   add u to S
+
+  //   for each successor v of u
+  
+  //     relax(u,v)
+  
+  //       if relax() decreases v.d, update Q accordingly
   
 }
 
 
 
 int main() {
-  // Create a graph like example in Figure 20.1a, p550, Cormen 4th ed
-  Graph g; // for this practice, g is an undirected graph
+  // Create a graph like example in Figure 22.6, p621, Cormen 4th ed
+  Graph g; // for this practice, g is an directed graph
   
   Vertex* vertex1 = new Vertex(1);
   g.addVertices(vertex1);
   Vertex* vertex2 = new Vertex(2);
   g.addVertices(vertex2);
+  Vertex* vertex3 = new Vertex(3);
+  g.addVertices(vertex3);
+  Vertex* vertex4 = new Vertex(4);
+  g.addVertices(vertex4);
+  Vertex* vertex5 = new Vertex(5);
+  g.addVertices(vertex5);
   
-  g.addEdges(vertex1, vertex2, 2); // directed edges, weighted
+  g.addEdges(vertex1, vertex2, 10); // directed edges, weighted
+  g.addEdges(vertex1, vertex3, 5);
+  g.addEdges(vertex2, vertex3, 2);
+  g.addEdges(vertex2, vertex4, 1);
+  g.addEdges(vertex3, vertex2, 3);
+  g.addEdges(vertex3, vertex4, 9);
+  g.addEdges(vertex3, vertex5, 2);
+  g.addEdges(vertex4, vertex5, 4);
+  g.addEdges(vertex5, vertex1, 7);
+  g.addEdges(vertex5, vertex4, 6);
     
   // Print
   g.graphPrint();
 
-  // Dijkstra
+  // Call Dijkstra's algorithm
   g.dijkstra(vertex1);
-  g.graphPrint();
+  g.pathPrint(vertex1, vertex4);
   
   return 0;
 }
