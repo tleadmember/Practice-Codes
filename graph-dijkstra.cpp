@@ -76,63 +76,6 @@ public:
 };
 
 
-/*
-class Queue {
-public:
-  VertexList* head;
-  VertexList* tail;
-
-  Queue() {
-    head = nullptr;
-    tail = nullptr;
-  }
-  
-  ~Queue() {
-    while (head != nullptr) {
-      VertexList* tempV = head->next;
-      //delete head->data; // memory of Vertex* pointers will be
-                           // deallocated in ~Graph()
-      delete head;
-      head = tempV;
-    }
-  }
-
-  void enqueue(Vertex* v) { // add to end of queue
-    VertexList* tempV = new VertexList;
-    tempV->data = v;
-    if (head == nullptr) { // empty queue
-      head = tempV;
-      tail = tempV;
-    } else { // one or more existing elements
-      tail->next = tempV;
-      tail = tempV;
-    }
-  }
-
-  Vertex* dequeue() {
-    if (head == nullptr) { // empty queue
-      std::cout << "Queue underflows.\n";
-      return nullptr;
-    } else if (head == tail) { // only one existing element
-      VertexList* tempV = head;
-      Vertex* tempv = head->data;
-      head = nullptr;
-      tail = nullptr;
-      delete tempV;
-      return tempv; // memory of Vertex* tempv will be deallocated in
-		    // ~Graph()
-    } else { // more than one existing element
-      VertexList* tempV = head;
-      Vertex* tempv = head->data;
-      head = head->next;
-      delete tempV;
-      return tempv; // memory of Vertex* tempv will be deallocated in
-		    // ~Graph()
-    }
-  }
-};
-*/
-
 
 class Set {
 public:
@@ -274,39 +217,6 @@ void Graph::pathPrint(Vertex* s, Vertex* v) { // source vertex s,
     std::cout << v->key << "  ";
   }	     
 }
-
-
-/*
-Vertex* Graph::BFS(Vertex* x, int key) {
-  // Create new frontier queue Q
-  Queue Q;
-  // Create new set V2 (all nodes ever added to frontier queue Q)
-  Set V2;
-  // Insert x into Q
-  Q.enqueue(x);
-  // Insert x into V2 (insert at beginning of list is fine)
-  V2.addVertices(x);
-  // While loop
-  while (Q.head != nullptr) {
-    Vertex* y = Q.dequeue();
-    if (y->key == key) {
-      return y;
-    }
-    // add all neighbors of y not already in V2 to Q and V2
-    EdgeList* tempE = E;
-    while (tempE != nullptr) {
-      if (tempE->data->v1 == y && V2.notContain(tempE->data->v2)) {
-	Q.enqueue(tempE->data->v2);
-	V2.addVertices(tempE->data->v2);
-      }
-      tempE = tempE->next;
-    }
-  }
-  // Otherwise, return that the key is not found
-  std::cout << "Key " << key << " not found.\n";
-  return nullptr;
-}
-*/
 
 
 void Graph::dijkstra(Vertex* s) { // source vertex s
