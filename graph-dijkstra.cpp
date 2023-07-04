@@ -4,6 +4,9 @@ Graph and Dijkstra's Algorithm
 */
 
 #include <iostream>
+#include <set>
+
+using namespace std;
 
 
 #define INF 2147483640; // define infinity, near the max of int
@@ -169,6 +172,16 @@ public:
 
 
 
+class myComparator {
+public:
+  int operator() (Vertex* v1, Vertex* v2) {
+    return v1->d > v2->d;
+  }
+};
+
+
+
+
 class Graph {
 public:
   VertexList* V;
@@ -182,6 +195,9 @@ public:
   void graphPrint();
   void pathPrint(Vertex*, Vertex*);
   void dijkstra(Vertex*);
+  void initializeSS(Vertex*);
+  void relax(Vertex*, Vertex*, Edge*);
+  bool check(Vertex*, Vertex*, Edge*);
 };
 
 
@@ -249,7 +265,7 @@ void Graph::graphPrint() {
 void Graph::pathPrint(Vertex* s, Vertex* v) { // source vertex s,
 					      // target vertex v
   if (v == s) {
-    std::cout << s->key;
+    std::cout << s->key << "  ";
   } else if (v->p == nullptr) {
     std::cout << "No path from " << s->key << " to " << v->key << std::endl;
     return; // end function in this case
@@ -295,25 +311,66 @@ Vertex* Graph::BFS(Vertex* x, int key) {
 
 void Graph::dijkstra(Vertex* s) { // source vertex s
   // Initialize-single-source (distance, predecessor)
-
+  initializeSS(s);
   // Create empty Q, min priority queue (maybe use STL min heap)
-
+  std::set <Vertex*, myComparator> Q;
   // Create empty set S (DOES NOT REALLY SERVE A PURPOSE HERE)
-
+  Set S;
   // Add all vertices to Q
-
+  VertexList* tempV = V;
+  while (tempV != nullptr) {
+    Q.insert(tempV->data);
+    tempV = tempV->next;
+  }
   // While Q is not empty (length/size != 0)
-  
+  while (!Q.empty()) {
   //   u = vertex with d == Q.min-extract(), head of a min heap
-
+    Vertex* u = *Q.begin(); // dereference the iterator to get the pointer
+    Q.erase(Q.begin());
   //   add u to S
-
+    S.addVertices(u);
   //   for each successor v of u
-  
+    EdgeList* tempE = E;
+    while (tempE != nullptr) {
   //     relax(u,v)
-  
-  //       if relax() decreases v.d, update Q accordingly
-  
+      if (tempE->data->v1 == u) {
+	if (check(u, tempE->data->v2, tempE->data)) {
+	  Q.erase(tempE->data->v2); // erase pointer variable, not vertex
+				    // memory
+	  relax(u, tempE->data->v2, tempE->data);
+	  
+	  Q.insert(tempE->data->v2); // insert a new pointer to vertex
+				     // (which is a new set element)
+	}
+      }
+      tempE = tempE->next;
+    }
+  }
+}
+
+
+void Graph::initializeSS(Vertex* s) {
+  VertexList* tempV = V;
+  while (tempV != nullptr) {
+    tempV->data->d = INF;
+    tempV->data->p = nullptr;
+    tempV = tempV->next;
+  }
+  s->d = 0;
+}
+
+
+bool Graph::check(Vertex* u, Vertex* v, Edge* e) {
+  if (v->d > (u->d + e->weight)) {
+    return true;
+  }
+  return false;
+}
+
+
+void Graph::relax(Vertex* u, Vertex* v, Edge* e) {
+    v->d = u->d + e->weight;
+    v->p = u;
 }
 
 
@@ -349,7 +406,7 @@ int main() {
 
   // Call Dijkstra's algorithm
   g.dijkstra(vertex1);
-  g.pathPrint(vertex1, vertex4);
+  g.pathPrint(vertex1, vertex5);
   
   return 0;
 }
